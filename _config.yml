@@ -19,13 +19,29 @@
 # in the templates via {{ site.myvariable }}.
 
 title: Pete Berryman
-email: peteb206@gmail.com
 description: >- # this means to ignore newlines until "baseurl:"
   Pete Berryman's personal work.
 # baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://peteb206.github.io/" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: PeteBerryman
 github_username:  peteb206
+
+# Site Author
+author:
+  name: "Pete Berryman"
+  avatar: "assets/images/Profile Picture.jpeg"
+  bio: "Sports guy"
+  location: "Fort Worth, TX"
+  links:
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/peteberryman82"
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/peteb206"
+    - label: "Twitter"
+      icon: "fab fa-fw fa-twitter"
+      url: "https://twitter.com/PeteBerryman"
 
 # Build settings
 remote_theme: "mmistakes/minimal-mistakes@4.24.0"
@@ -55,3 +71,5 @@ exclude:
   - README.md
   - tweets/
   - foul-ball-analysis/
+
+github: [metadata]
