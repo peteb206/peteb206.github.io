@@ -30,7 +30,7 @@ github_username:  peteb206
 author:
   name: "Pete Berryman"
   avatar: "assets/images/Profile Picture.jpeg"
-  bio: "Sports guy"
+  bio: "A sports guy"
   location: "Fort Worth, TX"
   links:
     - label: "LinkedIn"
@@ -45,6 +45,7 @@ author:
 
 # Build settings
 remote_theme: "mmistakes/minimal-mistakes@4.24.0"
+minimal_mistakes_skin: "air" # "default", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise"
 plugins:
   - jekyll-feed
   - jekyll-include-cache
@@ -69,7 +70,31 @@ exclude:
   # - vendor/gems/
   # - vendor/ruby/
   - README.md
+  - ref/
   - tweets/
   - foul-ball-analysis/
+include:
+  - _pages
+  - _posts
+
+defaults:
+  # _posts
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: single
+      author_profile: true
+      read_time: false
+      comments: false
+      share: true
+      related: false
+  # _pages
+  - scope:
+      path: ""
+      type: pages
+    values:
+      layout: single
+      author_profile: true
 
 github: [metadata]

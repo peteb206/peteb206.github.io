@@ -95,7 +95,7 @@
 <!-- end custom head snippets -->
   </head>
 
-  <body class="layout--home">
+  <body class="layout--single">
     <nav class="skip-links">
   <ul>
     <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
@@ -119,7 +119,15 @@
           Pete Berryman
           
         </a>
-        <ul class="visible-links"></ul>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/">Home</a>
+            </li><li class="masthead__menu-item">
+              <a href="/posts/">Posts</a>
+            </li><li class="masthead__menu-item">
+              <a href="/applications/">Applications</a>
+            </li><li class="masthead__menu-item">
+              <a href="/about/">About</a>
+            </li></ul>
         
         <button class="greedy-nav__toggle hidden" type="button">
           <span class="visually-hidden">Toggle menu</span>
@@ -159,7 +167,7 @@
     
     
       <div class="author__bio" itemprop="description">
-        <p>Sports guy</p>
+        <p>A sports guy</p>
 
       </div>
     
@@ -254,17 +262,25 @@
 
 
 
-  <div class="archive">
-    
-      <h1 id="page-title" class="page__title"></h1>
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
     
     
+    
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          
+          
 
 
-<h3 class="archive__subtitle">Recent Posts</h3>
+        </header>
+      
 
-
-
+      <section class="page__content" itemprop="text">
+        
+        <h3 class="archive__subtitle">Recent Posts</h3>
 
 <div class="entries-list">
   
@@ -273,29 +289,54 @@
 
 
 <div class="list__item">
-  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+  <article class="archive__item" itemscope="" itemtype="https://schema.org/CreativeWork">
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/jekyll/update/2023/10/10/welcome-to-jekyll.html" rel="permalink">Welcome to Jekyll!
+        <a href="/posts/2023/10/11/canadians-in-college-baseball.html" rel="permalink">Canadians in College Baseball
 </a>
       
     </h2>
     
 
 
-    <p class="archive__item-excerpt" itemprop="description">You’ll find this post in your _posts directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different wa...</p>
+    <p class="archive__item-excerpt" itemprop="description">This is a placeholder for my future write up regarding my work with the Canadian Baseball Network.
+
+</p>
   </article>
 </div>
 
   
 </div>
 
+<p><a class="twitter-timeline" data-height="400" data-theme="dark" href="https://twitter.com/PeteBerryman?ref_src=twsrc%5Etfw"></a>
+<script async="" src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
 
 
+        
 
-  </div>
+
+      </footer>
+
+      
+
+      
+    </div>
+
+    
+  </article>
+
+  
+  
 </div>
+
     </div>
 
     
