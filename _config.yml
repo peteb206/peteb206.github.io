@@ -28,20 +28,33 @@ github_username:  peteb206
 
 # Site Author
 author:
-  name: "Pete Berryman"
+  name: "Pete"
   avatar: "assets/images/Profile Picture.jpeg"
   bio: "A sports guy"
   location: "Fort Worth, TX"
   links:
-    - label: "LinkedIn"
-      icon: "fab fa-fw fa-linkedin"
-      url: "https://www.linkedin.com/in/peteberryman82"
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/peteb206"
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/peteberryman82"
     - label: "Twitter"
       icon: "fab fa-fw fa-twitter"
-      url: "https://twitter.com/PeteBerryman"
+      url: "https://twitter.com/PeteBerryman" 
+
+# Site Footer
+footer:
+  links:
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/peteb206"
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/peteberryman82"
+    - label: "Twitter"
+      icon: "fab fa-fw fa-twitter"
+      url: "https://twitter.com/PeteBerryman" 
 
 # Build settings
 remote_theme: "mmistakes/minimal-mistakes@4.24.0"
@@ -78,23 +91,23 @@ include:
   - _posts
 
 defaults:
-  # _posts
-  - scope:
+  - scope: # _posts
       path: ""
       type: posts
     values:
       layout: single
+      classes: wide
       author_profile: true
       read_time: false
       comments: false
       share: true
       related: false
-  # _pages
-  - scope:
+  - scope: # _pages
       path: ""
       type: pages
     values:
       layout: single
+      classes: wide
       author_profile: true
 
 github: [metadata]

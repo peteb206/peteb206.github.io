@@ -1,7 +1,7 @@
 ---
 layout: single
-title: Applications
-permalink: /applications/
+title: Apps
+permalink: /apps/
 ---
 
 Link to Beat the Streak predictor
