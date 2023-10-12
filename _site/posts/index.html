@@ -13,7 +13,7 @@
 <meta name="description" content="Pete Berryman’s personal work.">
 
 
-  <meta name="author" content="Pete">
+  <meta name="author" content="Pete Berryman">
   
 
 
@@ -92,10 +92,25 @@
 <meta name="msapplication-TileColor" content="#da532c">
 <meta name="msapplication-config" content="/assets/images/favicon/browserconfig.xml">
 <meta name="theme-color" content="#ffffff">
+
+<!-- Custom CSS -->
+<style>
+    /* Footer */
+    .page__footer .social-icons .fa-github { color: white; }
+    .page__footer .social-icons .fa-linkedin { color: white; }
+    .page__footer .social-icons .fa-twitter { color: white; }
+
+    /* Masthead */
+    div.masthead__inner-wrap {
+        padding-top: 0.5em;
+        padding-bottom: 0.5em;
+    }
+    .site-logo img { max-height: 3rem }
+</style>
 <!-- end custom head snippets -->
   </head>
 
-  <body class="layout--single wide">
+  <body class="layout--posts wide">
     <nav class="skip-links">
   <ul>
     <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
@@ -115,8 +130,10 @@
     <div class="masthead__menu">
       <nav id="site-nav" class="greedy-nav">
         
+          <a class="site-logo" href="/"><img src="/assets/images/logo-512x512.png" alt=" "></a>
+        
         <a class="site-title" href="/">
-          Pete Berryman
+           
           
         </a>
         <ul class="visible-links"><li class="masthead__menu-item">
@@ -144,6 +161,32 @@
       
 
 
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="http://localhost:4000/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        <li class="current">Posts</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
 
 <div id="main" role="main">
   
@@ -156,14 +199,14 @@
   
     <div class="author__avatar">
       
-        <img src="/assets/images/Profile%20Picture.jpeg" alt="Pete" itemprop="image">
+        <img src="/assets/images/Profile%20Picture.jpeg" alt="Pete Berryman" itemprop="image">
       
     </div>
   
 
   <div class="author__content">
     
-      <h3 class="author__name" itemprop="name">Pete</h3>
+      <h3 class="author__name" itemprop="name">Pete Berryman</h3>
     
     
       <div class="author__bio" itemprop="description">
@@ -262,42 +305,70 @@
 
 
 
-  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
-    <meta itemprop="headline" content="Posts">
+  <div class="archive">
+    
+      <h1 id="page-title" class="page__title">Posts</h1>
     
     
-    
-
-    <div class="page__inner-wrap">
-      
-        <header>
-          <h1 id="page-title" class="page__title" itemprop="headline">Posts
-</h1>
-          
 
 
-        </header>
-      
-
-      <section class="page__content" itemprop="text">
-        
-        
-<div class="entries-list">
+<ul class="taxonomy__index">
   
-    
+  
+    <li>
+      <a href="#2023">
+        <strong>2023</strong> <span class="taxonomy__count">1</span>
+      </a>
+    </li>
+  
+</ul>
+
+
+
+
+  <section id="2023" class="taxonomy__section">
+    <h2 class="archive__subtitle">2023</h2>
+    <div class="entries-list">
+      
+        
 
 
 
 <div class="list__item">
-  <article class="archive__item" itemscope="" itemtype="https://schema.org/CreativeWork">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/posts/2023/10/11/canadians-in-college-baseball.html" rel="permalink">Canadians in College Baseball
+        <a href="/posts/canadians-in-college-baseball/" rel="permalink">Canadians in College Baseball
 </a>
       
     </h2>
     
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2023-10-11T14:50:45-05:00">October 11, 2023</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          less than 1 minute read
+        
+      </span>
+    
+  </p>
 
 
     <p class="archive__item-excerpt" itemprop="description">This is a placeholder for my future write up regarding my work with the Canadian Baseball Network.
@@ -306,35 +377,14 @@
   </article>
 </div>
 
-  
-</div>
-
-
-        
-      </section>
-
-      <footer class="page__meta">
-        
-        
-
-
-        
-
-
-      </footer>
-
-      
-
       
     </div>
+    <a href="#page-title" class="back-to-top">Back to Top &uarr;</a>
+  </section>
 
-    
-  </article>
 
-  
-  
+  </div>
 </div>
-
     </div>
 
     

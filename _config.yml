@@ -21,14 +21,17 @@
 title: Pete Berryman
 description: >- # this means to ignore newlines until "baseurl:"
   Pete Berryman's personal work.
+logo: "/assets/images/logo-512x512.png"
+masthead_title: " "
 # baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://peteb206.github.io/" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: PeteBerryman
 github_username:  peteb206
+breadcrumbs: true
 
 # Site Author
 author:
-  name: "Pete"
+  name: "Pete Berryman"
   avatar: "assets/images/Profile Picture.jpeg"
   bio: "A sports guy"
   location: "Fort Worth, TX"
@@ -84,12 +87,22 @@ exclude:
   # - vendor/ruby/
   - README.md
   - ref/
+  - wip/
   - tweets/
-  - foul-ball-analysis/
 include:
   - _pages
   - _posts
+    
+# Outputting
+permalink: /:categories/:title/
+    
+# Collections
+collections:
+  apps:
+    output: true
+    permalink: /:collection/:path/
 
+# Defaults
 defaults:
   - scope: # _posts
       path: ""
@@ -98,7 +111,8 @@ defaults:
       layout: single
       classes: wide
       author_profile: true
-      read_time: false
+      show_date: true
+      read_time: true
       comments: false
       share: true
       related: false
@@ -108,6 +122,12 @@ defaults:
     values:
       layout: single
       classes: wide
+      author_profile: true
+  - scope: # _apps
+      path: ""
+      type: apps
+    values:
+      layout: single
       author_profile: true
 
 github: [metadata]
