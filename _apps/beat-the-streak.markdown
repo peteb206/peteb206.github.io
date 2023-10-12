@@ -7,7 +7,7 @@ header:
 
 <img src="/assets/images/Beat the Streak.png" style="max-width: 300px">
 
-<a href="https://peteberryman.shinyapps.io/bts-shiny/" target="_blank">Link to Web App</a>
+<a href="https://peteberryman.shinyapps.io/bts-shiny/" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i> Link to Web App</a>
 
 ## Summary
 Placeholder

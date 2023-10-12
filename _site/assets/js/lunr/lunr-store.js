@@ -1,6 +1,6 @@
 var store = [{
         "title": "Beat the Streak Shiny App",
-        "excerpt":"   Link to Web App   Summary  Placeholder   Screenshots    ","categories": [],
+        "excerpt":"     Link to Web App   Summary  Placeholder   Screenshots    ","categories": [],
         "tags": [],
         "url": "/apps/beat-the-streak/",
         "teaser": "/assets/images/Beat%20the%20Streak.png"
