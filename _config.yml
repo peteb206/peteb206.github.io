@@ -21,13 +21,14 @@
 title: Pete Berryman
 description: >- # this means to ignore newlines until "baseurl:"
   Pete Berryman's personal work.
-logo: "/assets/images/logo-512x512.png"
+logo: "/assets/images/favicon/android-chrome-512x512.png"
 masthead_title: " "
 # baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://peteb206.github.io/" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: PeteBerryman
 github_username:  peteb206
 breadcrumbs: true
+teaser: "/assets/images/favicon/android-chrome-512x512.png"
 
 # Site Author
 author:
@@ -61,7 +62,7 @@ footer:
 
 # Build settings
 remote_theme: "mmistakes/minimal-mistakes@4.24.0"
-minimal_mistakes_skin: "air" # "default", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise"
+minimal_mistakes_skin: "dirt" # "default", "air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise"
 plugins:
   - jekyll-feed
   - jekyll-include-cache
@@ -109,7 +110,7 @@ defaults:
       type: posts
     values:
       layout: single
-      classes: wide
+      # classes: wide
       author_profile: true
       show_date: true
       read_time: true
