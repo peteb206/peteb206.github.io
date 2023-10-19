@@ -3,7 +3,7 @@ main:
     url: /
   - title: "Posts"
     url: /posts/
-  - title: "Apps"
-    url: /apps/
+  - title: "Projects & Apps"
+    url: /projects/
   - title: "About"
     url: /about/

@@ -99,7 +99,7 @@ permalink: /:categories/:title/
     
 # Collections
 collections:
-  apps:
+  projects:
     output: true
     permalink: /:collection/:path/
 
@@ -124,9 +124,9 @@ defaults:
       layout: single
       classes: wide
       author_profile: true
-  - scope: # _apps
+  - scope: # _projects
       path: ""
-      type: apps
+      type: projects
     values:
       layout: single
       author_profile: true
