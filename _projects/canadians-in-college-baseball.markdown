@@ -30,8 +30,8 @@ Bob Elliott, the site's Editor in Chief, has known my dad for a long time. He co
 
 ### Process Flow
 ## Links
-<a href="https://github.com/peteb206/canadians-in-college-baseball" target="_blank"><i class="fab fa-fw fa-github"></i><span class="label">GitHub Repository</span></a>
-
 <a href="https://www.canadianbaseballnetwork.com/canadian-baseball-network-canadians-in-college" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i><span style="padding-left: 5px;">Canadians in College</span></a>
 
 <a href="https://www.canadianbaseballnetwork.com/canadians-in-college-stats" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i><span style="padding-left: 5px;">Canadians in College Stats</span></a>
+
+<a href="https://github.com/peteb206/canadians-in-college-baseball" target="_blank"><i class="fab fa-fw fa-github"></i><span class="label">GitHub Repository</span></a>

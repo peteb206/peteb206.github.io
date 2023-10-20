@@ -9,35 +9,41 @@
   <head>
     <meta charset="utf-8">
 
-<!-- begin _includes/seo.html --><title>Projects &amp; Apps - Pete Berryman</title>
-<meta name="description" content="Pete Berryman’s personal work.">
+<!-- begin _includes/seo.html --><title>Fort Worth Men’s Senior Baseball League Website - Pete Berryman</title>
+<meta name="description" content="I built a new website for a men’s baseball league I play in using Flask, Bootstrap, etc.">
 
 
   <meta name="author" content="Pete Berryman">
   
+  <meta property="article:author" content="Pete Berryman">
+  
 
 
-<meta property="og:type" content="website">
+<meta property="og:type" content="article">
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="Pete Berryman">
-<meta property="og:title" content="Projects &amp; Apps">
-<meta property="og:url" content="http://localhost:4000/projects/">
+<meta property="og:title" content="Fort Worth Men’s Senior Baseball League Website">
+<meta property="og:url" content="http://localhost:4000/projects/fort-worth-mens-senior-baseball-league-website/">
 
 
-  <meta property="og:description" content="Pete Berryman’s personal work.">
-
-
-
+  <meta property="og:description" content="I built a new website for a men’s baseball league I play in using Flask, Bootstrap, etc.">
 
 
 
-
+  <meta property="og:image" content="http://localhost:4000/assets/images/fwmsbl.png">
 
 
 
 
 
-<link rel="canonical" href="http://localhost:4000/projects/">
+  <meta property="article:published_time" content="2023-10-20T11:02:09-05:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/projects/fort-worth-mens-senior-baseball-league-website/">
 
 
 
@@ -139,7 +145,7 @@
 <!-- end custom head snippets -->
   </head>
 
-  <body class="layout--collection wide">
+  <body class="layout--single">
     <nav class="skip-links">
   <ul>
     <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
@@ -208,7 +214,17 @@
         <span class="sep">/</span>
       
       
-        <li class="current">Projects & Apps</li>
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/projects" itemprop="item"><span itemprop="name">Projects</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        <li class="current">Fort Worth Men's Senior Baseball League Website</li>
       
     
   </ol>
@@ -334,96 +350,98 @@
 
 
 
-  <div class="archive">
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Fort Worth Men’s Senior Baseball League Website">
+    <meta itemprop="description" content="I built a new website for a men’s baseball league I play in using Flask, Bootstrap, etc.">
     
-      <h1 id="page-title" class="page__title">Projects & Apps</h1>
     
-    <!-- TODO: quick links under title or description to website, GitHub, etc -->
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Fort Worth Men’s Senior Baseball League Website
+</h1>
+          
 
 
+        </header>
+      
 
-<div class="entries-grid">
+      <section class="page__content" itemprop="text">
+        
+        <p><img src="/assets/images/fwmsbl.png" style="max-width: 800px" /></p>
+
+<h2 id="summary">Summary</h2>
+<p>I built a new website for a men’s baseball league I play in. The old site was through an overpriced service, and it offered limited customizable functionality. The new site includes…</p>
+<ul>
+  <li>League standings</li>
+  <li>A user-friendly schedule page</li>
+  <li>The league’s rules</li>
+  <li>Each team’s roster</li>
+  <li>The location of each field where games are played</li>
+  <li>Several necessary forms for prospective/current players to fill out</li>
+</ul>
+
+<p>To allow the league’s administrators to easily control the content (e.g. game schedule) of the site, the site pulls data from a Google Sheet that they can edit.</p>
+
+<h2 id="technical-details">Technical Details</h2>
+<p>Front end</p>
+<ul>
+  <li>HTML</li>
+  <li>JQuery</li>
+  <li>Bootstrap</li>
+</ul>
+
+<p>Back end</p>
+<ul>
+  <li>Python packages:
+    <ul>
+      <li>Flask</li>
+      <li>Gspread</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="links">Links</h2>
+<p><a href="https://www.fortworthmsbl.com/" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i><span style="padding-left: 5px;">Link to Website</span></a></p>
+
+<p><a href="https://github.com/peteb206/fwmsbl" target="_blank"><i class="fab fa-fw fa-github"></i><span class="label">GitHub Repository</span></a></p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+
+
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/projects/canadians-in-college-baseball/" class="pagination--pager" title="Canadians in College Baseball
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
   
-
-
-
-
-
-
-
-<div class="grid__item">
-  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
-    
-      <div class="archive__item-teaser">
-        <img src="/assets/images/Beat%20the%20Streak.png" alt="">
-      </div>
-    
-    <h2 class="archive__item-title no_toc" itemprop="headline">
-      
-        <a href="/projects/beat-the-streak/" rel="permalink">Beat the Streak Shiny App
-</a>
-      
-    </h2>
-    
-
-
-    <p class="archive__item-excerpt" itemprop="description">A Shiny for Python web app to make better predictions to win MLB’s Beat the Streak contest.
-</p>
-  </article>
+  
 </div>
 
-
-
-
-<div class="grid__item">
-  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
-    
-      <div class="archive__item-teaser">
-        <img src="/assets/images/Canadian%20Baseball%20Network.png" alt="">
-      </div>
-    
-    <h2 class="archive__item-title no_toc" itemprop="headline">
-      
-        <a href="/projects/canadians-in-college-baseball/" rel="permalink">Canadians in College Baseball
-</a>
-      
-    </h2>
-    
-
-
-    <p class="archive__item-excerpt" itemprop="description">How many Canadians are playing college baseball? What are these players’ stats?
-</p>
-  </article>
-</div>
-
-
-
-
-<div class="grid__item">
-  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
-    
-      <div class="archive__item-teaser">
-        <img src="/assets/images/fwmsbl.png" alt="">
-      </div>
-    
-    <h2 class="archive__item-title no_toc" itemprop="headline">
-      
-        <a href="/projects/fort-worth-mens-senior-baseball-league-website/" rel="permalink">Fort Worth Men’s Senior Baseball League Website
-</a>
-      
-    </h2>
-    
-
-
-    <p class="archive__item-excerpt" itemprop="description">I built a new website for a men’s baseball league I play in using Flask, Bootstrap, etc.
-</p>
-  </article>
-</div>
-
-</div>
-
-  </div>
-</div>
     </div>
 
     
