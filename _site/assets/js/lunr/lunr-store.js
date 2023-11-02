@@ -3,7 +3,13 @@ var store = [{
         "excerpt":"In recent years, we have seen some astronomical contracts given to professional athletes. Major League Baseball (MLB) has certainly had its share. One of its first notable “megadeals” was when Alex Rodriguez, the Seattle Mariners’ power-hitting shortstop, left the team to join the Texas Rangers in 2001. The Rangers committed...","categories": [],
         "tags": [],
         "url": "/sas-blog/",
-        "teaser": "/assets/images/SAS%20Blog%20Teaser.avif"
+        "teaser": "/assets/images/SAS%20Blog%20Teaser.png"
+      },{
+        "title": "MLB Career WAR by Debut Team",
+        "excerpt":"Players who debuted with the St. Louis Cardinals have accumulated the more career fWAR (4,966.6) than any other franchise. 1,053 players can say they debuted with the Cardinals, which also leads the MLB. The 767 players first called up by the Yankees have averaged a 5.76 career fWAR (most in...","categories": [],
+        "tags": [],
+        "url": "/career-war-by-debut-team/",
+        "teaser": "https://pbs.twimg.com/media/F8GYUBoWEAEkT1e?format=jpg&name=4096x4096"
       },{
         "title": "Beat the Streak Shiny App",
         "excerpt":"From the Beat the Streak contest FAQ’s: What is Beat the Streak? Beat the Streak is a free-to-play contest where fans predict an MLB player to get a hit. If fans build a streak of 57 correct picks (beating baseball’s famous 56-game hitting streak), they could win $5.6 Million. […]...","categories": [],

@@ -96,6 +96,18 @@
 <!-- Font Awesome Icons -->
 <script src="https://kit.fontawesome.com/ad55694c33.js" crossorigin="anonymous"></script>
 
+<script>
+    document.addEventListener("DOMContentLoaded", function(event) {
+        var links = document.getElementsByTagName("a");
+        for (var i = 0; i < links.length; i++) {
+            var thisLink = links[i];
+            if (thisLink.getAttribute("href").startsWith("http")) {
+                thisLink.setAttribute("target", "_blank");
+            }
+        }
+    });
+</script>
+
 <!-- Custom CSS -->
 <style>
     /* Footer */
@@ -340,7 +352,71 @@
                 
                     
                         <td>
-                            <img src="/assets/images/SAS%20Blog%20Teaser.avif" style="max-width: 10em; padding-right: 15px;" />
+                            <img src="https://pbs.twimg.com/media/F8GYUBoWEAEkT1e?format=jpg&amp;name=4096x4096" style="max-width: 10em; padding-right: 15px;" />
+                        </td>
+                    
+                
+                <td>
+                    <h2 class="archive__item-title no_toc" itemprop="headline">
+                        
+                            <a href="https://twitter.com/PeteBerryman/status/1711818907449766233" target="_blank">MLB Career WAR by Debut Team
+</a>
+                            <!-- <a href="/career-war-by-debut-team/" rel="permalink">
+                                <i class="fas fa-link" aria-hidden="true" title="permalink"></i>
+                                <span class="sr-only">Permalink</span>
+                            </a> -->
+                        
+                    </h2>
+                    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2023-10-10T09:00:00-05:00">October 10, 2023</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          less than 1 minute read
+        
+      </span>
+    
+  </p>
+
+
+                    
+                        <p class="archive__item-excerpt" itemprop="description">Players who debuted with the St. Louis Cardinals have accumulated the more career fWAR (4,966.6) than any other franchise.
+</p>
+                    
+                </td>
+            </tr>
+        </table>
+    </article>
+</div>
+  
+    
+
+
+
+<div class="list__item">
+    <article class="archive__item" itemscope="" itemtype="https://schema.org/CreativeWork">
+        <table class="post" border="0">
+            <tr>
+                
+                    
+                        <td>
+                            <img src="/assets/images/SAS%20Blog%20Teaser.png" style="max-width: 10em; padding-right: 15px;" />
                         </td>
                     
                 
@@ -376,7 +452,7 @@
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          9 minute read
+          12 minute read
         
       </span>
     
@@ -384,8 +460,7 @@
 
 
                     
-                        <p class="archive__item-excerpt" itemprop="description">
-
+                        <p class="archive__item-excerpt" itemprop="description">There is no easy road to success for a MLB team. There are many ways to build a great team, but there are many more ways to build a mediocre team.
 </p>
                     
                 </td>

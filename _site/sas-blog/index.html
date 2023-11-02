@@ -10,7 +10,7 @@
     <meta charset="utf-8">
 
 <!-- begin _includes/seo.html --><title>Competing in the big leagues with or without big money - Pete Berryman</title>
-<meta name="description" content="">
+<meta name="description" content="There is no easy road to success for a MLB team. There are many ways to build a great team, but there are many more ways to build a mediocre team.">
 
 
   <meta name="author" content="Pete Berryman">
@@ -26,11 +26,11 @@
 <meta property="og:url" content="http://localhost:4000/sas-blog/">
 
 
-  <meta property="og:description" content="">
+  <meta property="og:description" content="There is no easy road to success for a MLB team. There are many ways to build a great team, but there are many more ways to build a mediocre team.">
 
 
 
-  <meta property="og:image" content="http://localhost:4000/assets/images/SAS%20Blog%20Teaser.avif">
+  <meta property="og:image" content="http://localhost:4000/assets/images/SAS%20Blog%20Teaser.png">
 
 
 
@@ -101,6 +101,18 @@
 
 <!-- Font Awesome Icons -->
 <script src="https://kit.fontawesome.com/ad55694c33.js" crossorigin="anonymous"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(event) {
+        var links = document.getElementsByTagName("a");
+        for (var i = 0; i < links.length; i++) {
+            var thisLink = links[i];
+            if (thisLink.getAttribute("href").startsWith("http")) {
+                thisLink.setAttribute("target", "_blank");
+            }
+        }
+    });
+</script>
 
 <!-- Custom CSS -->
 <style>
@@ -355,7 +367,7 @@
 
   <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
     <meta itemprop="headline" content="Competing in the big leagues with or without big money">
-    <meta itemprop="description" content="">
+    <meta itemprop="description" content="There is no easy road to success for a MLB team. There are many ways to build a great team, but there are many more ways to build a mediocre team.">
     <meta itemprop="datePublished" content="2020-12-10T04:14:02-06:00">
     
 
@@ -385,7 +397,7 @@
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          9 minute read
+          12 minute read
         
       </span>
     
@@ -489,6 +501,16 @@ There is no easy road to success for a MLB team. There are many ways to build a 
 
 
       
+  <nav class="pagination">
+    
+      <a href="#" class="pagination--pager disabled">Previous</a>
+    
+    
+      <a href="/career-war-by-debut-team/" class="pagination--pager" title="MLB Career WAR by Debut Team
+">Next</a>
+    
+  </nav>
+
     </div>
 
     

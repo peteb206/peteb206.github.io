@@ -36,7 +36,7 @@
 
 
 
-  <meta property="article:published_time" content="2023-10-26T14:31:02-05:00">
+  <meta property="article:published_time" content="2023-11-02T15:38:36-05:00">
 
 
 
@@ -101,6 +101,18 @@
 
 <!-- Font Awesome Icons -->
 <script src="https://kit.fontawesome.com/ad55694c33.js" crossorigin="anonymous"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(event) {
+        var links = document.getElementsByTagName("a");
+        for (var i = 0; i < links.length; i++) {
+            var thisLink = links[i];
+            if (thisLink.getAttribute("href").startsWith("http")) {
+                thisLink.setAttribute("target", "_blank");
+            }
+        }
+    });
+</script>
 
 <!-- Custom CSS -->
 <style>
@@ -392,7 +404,7 @@
 <h2 id="summary">Summary</h2>
 <p>This is a contest where the odds of winning are extremely low. At the end of the day, even MLB’s best hitters are human beings and might go hitless against a lesser pitching opponent.</p>
 
-<p>However, the contest is really fun to compete in. I have been playing for years, and I found myself looking up all kinds of stats on <a href="https://baseballsavant.mlb.com" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i><span class="external-link-label">Baseball Savant</span></a>, <a href="https://www.fangraphs.com" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i><span class="external-link-label">Fangraphs</span></a> and other sites to evaluate the batters and pitchers who would be competing each day. This process was very informative but not very scientific, and it was often hard to know which stats mattered the most in order to make the best decision. This inspired me to start collecting useful data and try to build predictive models to best aggregate these statistics into a single number that offered a player’s chance to get a hit on a given day.</p>
+<p>However, the contest is really fun to compete in. I have been playing for years, and I found myself looking up all kinds of stats on <a href="https://baseballsavant.mlb.com"><i class="fa-solid fa-arrow-up-right-from-square"></i><span class="external-link-label">Baseball Savant</span></a>, <a href="https://www.fangraphs.com"><i class="fa-solid fa-arrow-up-right-from-square"></i><span class="external-link-label">Fangraphs</span></a> and other sites to evaluate the batters and pitchers who would be competing each day. This process was very informative but not very scientific, and it was often hard to know which stats mattered the most in order to make the best decision. This inspired me to start collecting useful data and try to build predictive models to best aggregate these statistics into a single number that offered a player’s chance to get a hit on a given day.</p>
 
 <h2 id="data">Data</h2>
 
@@ -402,10 +414,10 @@
 <iframe src="https://peteberryman.shinyapps.io/bts-shiny/" width="100%" height="500px"></iframe>
 
 <h2 id="links">Links</h2>
-<p><a href="https://peteberryman.shinyapps.io/bts-shiny/" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i><span class="external-link-label">Link to Web App</span></a></p>
+<p><a href="https://peteberryman.shinyapps.io/bts-shiny/"><i class="fa-solid fa-arrow-up-right-from-square"></i><span class="external-link-label">Link to Web App</span></a></p>
 
 <p>For more technical details of the project, visit the<br />
-<a href="https://github.com/peteb206/bts-shiny" target="_blank"><i class="fab fa-fw fa-github"></i><span class="label">GitHub Repository</span></a></p>
+<a href="https://github.com/peteb206/bts-shiny"><i class="fab fa-fw fa-github"></i><span class="label">GitHub Repository</span></a></p>
 
         
       </section>

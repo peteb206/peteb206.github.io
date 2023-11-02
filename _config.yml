@@ -89,8 +89,7 @@ exclude:
   # - vendor/ruby/
   - README.md
   - ref/
-  - wip/
-  - tweets/
+  - _posts/*/*
 include:
   - _pages
   - _posts

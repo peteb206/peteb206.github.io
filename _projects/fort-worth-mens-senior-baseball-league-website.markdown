@@ -34,7 +34,7 @@ Back end
     - gspread
 
 ## Links
-<a href="https://www.fortworthmsbl.com/" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i><span class="external-link-label">Link to Website</span></a>
+<a href="https://www.fortworthmsbl.com/"><i class="fa-solid fa-arrow-up-right-from-square"></i><span class="external-link-label">Link to Website</span></a>
 
 For more technical details of the project, visit the<br>
-<a href="https://github.com/peteb206/fwmsbl" target="_blank"><i class="fab fa-fw fa-github"></i><span class="label">GitHub Repository</span></a>
+<a href="https://github.com/peteb206/fwmsbl"><i class="fab fa-fw fa-github"></i><span class="label">GitHub Repository</span></a>

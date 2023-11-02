@@ -36,7 +36,7 @@
 
 
 
-  <meta property="article:published_time" content="2023-10-26T14:31:02-05:00">
+  <meta property="article:published_time" content="2023-11-02T15:38:36-05:00">
 
 
 
@@ -101,6 +101,18 @@
 
 <!-- Font Awesome Icons -->
 <script src="https://kit.fontawesome.com/ad55694c33.js" crossorigin="anonymous"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(event) {
+        var links = document.getElementsByTagName("a");
+        for (var i = 0; i < links.length; i++) {
+            var thisLink = links[i];
+            if (thisLink.getAttribute("href").startsWith("http")) {
+                thisLink.setAttribute("target", "_blank");
+            }
+        }
+    });
+</script>
 
 <!-- Custom CSS -->
 <style>
@@ -421,10 +433,10 @@
 </ul>
 
 <h2 id="links">Links</h2>
-<p><a href="https://www.fortworthmsbl.com/" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i><span class="external-link-label">Link to Website</span></a></p>
+<p><a href="https://www.fortworthmsbl.com/"><i class="fa-solid fa-arrow-up-right-from-square"></i><span class="external-link-label">Link to Website</span></a></p>
 
 <p>For more technical details of the project, visit the<br />
-<a href="https://github.com/peteb206/fwmsbl" target="_blank"><i class="fab fa-fw fa-github"></i><span class="label">GitHub Repository</span></a></p>
+<a href="https://github.com/peteb206/fwmsbl"><i class="fab fa-fw fa-github"></i><span class="label">GitHub Repository</span></a></p>
 
         
       </section>

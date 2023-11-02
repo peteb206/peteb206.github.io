@@ -96,6 +96,18 @@
 <!-- Font Awesome Icons -->
 <script src="https://kit.fontawesome.com/ad55694c33.js" crossorigin="anonymous"></script>
 
+<script>
+    document.addEventListener("DOMContentLoaded", function(event) {
+        var links = document.getElementsByTagName("a");
+        for (var i = 0; i < links.length; i++) {
+            var thisLink = links[i];
+            if (thisLink.getAttribute("href").startsWith("http")) {
+                thisLink.setAttribute("target", "_blank");
+            }
+        }
+    });
+</script>
+
 <!-- Custom CSS -->
 <style>
     /* Footer */

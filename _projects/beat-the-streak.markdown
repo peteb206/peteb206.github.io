@@ -14,7 +14,7 @@ From the [Beat the Streak contest FAQ's](https://www.mlb.com/apps/beat-the-strea
 ## Summary
 This is a contest where the odds of winning are extremely low. At the end of the day, even MLB's best hitters are human beings and might go hitless against a lesser pitching opponent.
 
-However, the contest is really fun to compete in. I have been playing for years, and I found myself looking up all kinds of stats on <a href="https://baseballsavant.mlb.com" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i><span class="external-link-label">Baseball Savant</span></a>, <a href="https://www.fangraphs.com" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i><span class="external-link-label">Fangraphs</span></a> and other sites to evaluate the batters and pitchers who would be competing each day. This process was very informative but not very scientific, and it was often hard to know which stats mattered the most in order to make the best decision. This inspired me to start collecting useful data and try to build predictive models to best aggregate these statistics into a single number that offered a player's chance to get a hit on a given day.
+However, the contest is really fun to compete in. I have been playing for years, and I found myself looking up all kinds of stats on <a href="https://baseballsavant.mlb.com"><i class="fa-solid fa-arrow-up-right-from-square"></i><span class="external-link-label">Baseball Savant</span></a>, <a href="https://www.fangraphs.com"><i class="fa-solid fa-arrow-up-right-from-square"></i><span class="external-link-label">Fangraphs</span></a> and other sites to evaluate the batters and pitchers who would be competing each day. This process was very informative but not very scientific, and it was often hard to know which stats mattered the most in order to make the best decision. This inspired me to start collecting useful data and try to build predictive models to best aggregate these statistics into a single number that offered a player's chance to get a hit on a given day.
 
 ## Data
 
@@ -24,7 +24,7 @@ However, the contest is really fun to compete in. I have been playing for years,
 <iframe src="https://peteberryman.shinyapps.io/bts-shiny/" width="100%" height="500px"></iframe>
 
 ## Links
-<a href="https://peteberryman.shinyapps.io/bts-shiny/" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i><span class="external-link-label">Link to Web App</span></a>
+<a href="https://peteberryman.shinyapps.io/bts-shiny/"><i class="fa-solid fa-arrow-up-right-from-square"></i><span class="external-link-label">Link to Web App</span></a>
 
 For more technical details of the project, visit the<br>
-<a href="https://github.com/peteb206/bts-shiny" target="_blank"><i class="fab fa-fw fa-github"></i><span class="label">GitHub Repository</span></a>
+<a href="https://github.com/peteb206/bts-shiny"><i class="fab fa-fw fa-github"></i><span class="label">GitHub Repository</span></a>
