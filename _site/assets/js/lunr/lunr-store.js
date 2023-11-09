@@ -27,7 +27,7 @@ var store = [{
         "excerpt":"Summary I built a new website for a men’s baseball league I play in. The old site was through an overpriced service, and it offered limited customizable functionality. The new site includes… League standings A user-friendly schedule page The league’s rules Each team’s roster The location of each field where...","categories": [],
         "tags": ["web development"],
         "url": "/projects/fort-worth-mens-senior-baseball-league-website/",
-        "teaser": "/assets/images/FWMSBL.png"
+        "teaser": "/assets/images/Fort%20Worth%20Mens%20Senior%20Baseball%20League.png"
       },{
         "title": "PJB Sports Data",
         "excerpt":"Introduction Much of the MLB research I have done in recent years has involved loading Statcast data from Baseball Savant. This publicly-available data provides an incredible opportunity to conduct in-depth studies of what we see happening on the diamond. However, I found that I was left with two options when...","categories": [],
