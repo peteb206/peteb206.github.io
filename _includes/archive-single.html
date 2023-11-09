@@ -1,0 +1,72 @@
+<!-- Based on https://github.com/mmistakes/minimal-mistakes/blob/master/_includes/archive-single.html -->
+
+{% if post.header.teaser %}
+    {% capture teaser %}{{ post.header.teaser }}{% endcapture %}
+{% else %}
+    {% assign teaser = site.teaser %}
+{% endif %}
+
+{% if post.id %}
+    {% assign title = post.title | markdownify | remove: "<p>" | remove: "</p>" %}
+{% else %}
+    {% assign title = post.title %}
+{% endif %}
+
+<div class="{{ include.type | default: 'list' }}__item">
+    <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+        <table class="post" border="0">
+            <tr>
+                {% if teaser %}
+                    {% if include.type == "grid" %}
+                            <td>
+                                <a 
+                                    {% if post.link %}
+                                        href="{{ post.link }}" target="_blank">
+                                    {% else %}
+                                        href="{{ post.url | relative_url }}">
+                                    {% endif %}
+                                    <div class="archive__item-teaser">
+                                        <img src="{{ teaser | relative_url }}" alt="">
+                                    </div>
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                    {% else %}
+                        <td>
+                            <a 
+                                {% if post.link %}
+                                    href="{{ post.link }}" target="_blank">
+                                {% else %}
+                                    href="{{ post.url | relative_url }}">
+                                {% endif %}
+                                <img src="{{ teaser | relative_url }}" style="max-width: 10em; padding-right: 15px;">
+                            </a>
+                        </td>
+                    {% endif %}
+                {% endif %}
+                <td>
+                    <a style="text-decoration: none;"
+                        {% if post.link %}
+                            href="{{ post.link }}" target="_blank">
+                        {% else %}
+                            href="{{ post.url | relative_url }}">
+                        {% endif %}
+                        <h2 class="archive__item-title no_toc" itemprop="headline" style="margin-top: 0.5em;">{{ title }}</h2>
+                        {% include page__meta.html type=include.type %}
+                        {% if post.excerpt %}
+                            <p class="archive__item-excerpt" itemprop="description">{{ post.excerpt | markdownify | strip_html | truncate: 160 }}</p>
+                        {% endif %}
+                    </a>
+                    <div class="item-tags">
+                        {% if post.tags %}
+                            {% for tag in post.tags %}
+                                <span class="item-tag">{{ tag }}</span>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </article>
+</div>

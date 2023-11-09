@@ -30,6 +30,7 @@ github_username:  peteb206
 breadcrumbs: true
 teaser: "/assets/images/favicon/android-chrome-512x512.png"
 words_per_minute: 160
+paginate: 5
 
 # Site Author
 author:
@@ -38,28 +39,28 @@ author:
   bio: "A sports guy"
   location: "Fort Worth, TX"
   links:
-    - label: "GitHub"
-      icon: "fab fa-fw fa-github"
-      url: "https://github.com/peteb206"
     - label: "LinkedIn"
       icon: "fab fa-fw fa-linkedin"
       url: "https://www.linkedin.com/in/peteberryman82"
     - label: "Twitter"
       icon: "fab fa-fw fa-twitter"
-      url: "https://twitter.com/PeteBerryman" 
+      url: "https://twitter.com/PeteBerryman"
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/peteb206"
 
 # Site Footer
 footer:
   links:
-    - label: "GitHub"
-      icon: "fab fa-fw fa-github"
-      url: "https://github.com/peteb206"
     - label: "LinkedIn"
       icon: "fab fa-fw fa-linkedin"
       url: "https://www.linkedin.com/in/peteberryman82"
     - label: "Twitter"
       icon: "fab fa-fw fa-twitter"
-      url: "https://twitter.com/PeteBerryman" 
+      url: "https://twitter.com/PeteBerryman"
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/peteb206"
 
 # Build settings
 remote_theme: "mmistakes/minimal-mistakes@4.24.0"

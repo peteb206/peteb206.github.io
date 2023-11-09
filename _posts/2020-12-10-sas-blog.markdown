@@ -6,6 +6,11 @@ header:
     teaser: "/assets/images/SAS Blog Teaser.png"
 link: "https://blogs.sas.com/content/sascom/2020/12/10/competing-in-the-big-leagues-with-or-without-big-money/"
 excerpt: "There is no easy road to success for a MLB team. There are many ways to build a great team, but there are many more ways to build a mediocre team."
+tags: [
+    mlb salaries,
+    baseball analytics,
+    data visualization
+]
 ---
 
 <!-- Include text for accurate read time -->

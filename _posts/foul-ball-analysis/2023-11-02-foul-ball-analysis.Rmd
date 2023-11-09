@@ -44,6 +44,8 @@ library(scales)
 library(plotly)
 library(knitr)
 library(kableExtra)
+library(ggimage)
+library(jsonlite)
 
 # BigQuery
 bq <- dbConnect(bigrquery::bigquery(),
@@ -61,7 +63,7 @@ for (player_type in c("batter", "pitcher")) {
 ```
 
 ## Intro
-We talk often about player tendencies to achieve certain outcomes... a hitter's spray chart, a hitter's launch angle breakdown, a pitcher's pitch distribution, a pitcher's fly ball to ground ball ratio, etc. However, there is a common event that often gets overlooked in baseball analysis: the foul ball. Every now and then, a stat about foul balls will emerge, such as how  [https://www.si.com/more-sports/2012/06/05/joey-vottoreds](Joey Votto pulled one foul ball into the seats over the first 2,138 plate appearances of his career), but more attention is lent to the balls that are put in play, watched or whiffed at.
+We talk often about player tendencies to achieve certain outcomes... a hitter's spray chart, a hitter's launch angle breakdown, a pitcher's pitch distribution, a pitcher's fly ball to ground ball ratio, etc. However, there is a common event that often gets overlooked in baseball analysis: the foul ball. Every now and then, a stat about foul balls will emerge, such as how  [Joey Votto pulled one foul ball into the seats over the first 2,138 plate appearances of his career](https://www.si.com/more-sports/2012/06/05/joey-vottoreds), but more attention is lent to the balls that are put in play, watched or whiffed at.
 
 ```{r}
 ggplot(
@@ -108,13 +110,13 @@ ggplot(
 ```
 
 Foul balls make up nearly 18% of pitch outcomes and can be interpreted in a number of different ways. With less than two strikes...
-- the pitch wasn't really what the batter was looking for, but he swung anyway.
-- the batter's swing or timing was slightly off.
+* the pitch wasn't really what the batter was looking for, but he swung anyway.
+* the batter's swing or timing was slightly off.
 With two strikes...
-- the batter is just trying to stay alive with two strikes.
-- the pitch wasn't located well enough or wasn't deceptive enough to miss the bat entirely.
+* the batter is just trying to stay alive with two strikes.
+* the pitch wasn't located well enough or wasn't deceptive enough to miss the bat entirely.
 
-Fouls can feel like a neutral outcome when they happen on the field, but they are almost always a positive outcome for either the pitcher or the hitter. For example, with less than two strikes, a foul ball is a positive outcome for the pitcher. Certain foul balls, like a towering drive that hooks foul, can indicate that the batter has the upper hand, but it still counts like any other strike, and the pitcher can breath a sigh of relief. When there are two strikes, a foul ball is always going to feel like the batter held strong, and the pitcher is annoyed that he has to throw another pitch. In short, a foul ball is a win for the pitcher with less than 2 strikes, and it is a win for the hitter with 2 strikes. With this in mind, I wanted to split hitter/pitcher foul ball tendencies based on the count.
+Fouls can feel like a neutral outcome when they happen on the field, but they are almost always a positive outcome for either the pitcher or the hitter. For example, with less than two strikes, a foul ball is a positive outcome for the pitcher. Certain foul balls, like a towering drive that hooks foul, can indicate that the batter has the upper hand, but it still counts like any other strike, and the pitcher can breath a sigh of relief. When there are two strikes, a foul ball is always going to feel like the batter held strong, and the pitcher is annoyed that he has to throw another pitch. In short, a foul ball is a win for the pitcher with less than 2 strikes, and it is a win for the hitter with 2 strikes. With this in mind, I wanted to split hitter and pitcher foul ball tendencies based on the count.
 
 ```{r, message = FALSE}
 batters.2023.df <- statcast_leaderboard$batter %>%
@@ -127,16 +129,13 @@ batters.2023.df <- statcast_leaderboard$batter %>%
   inner_join(
     dbGetQuery(bq, 'SELECT
                       batter player_id,
-                      COUNTIF(description IN ("swinging_strike", "foul_tip",
-                        "swinging_strike_blocked")) / COUNT(*) `0|1-Strike Whiff %`,
+                      COUNTIF(description IN ("swinging_strike", "foul_tip", "swinging_strike_blocked")) / COUNT(*) `0|1-Strike Whiff %`,
                       COUNTIF(description = "foul") / COUNT(*) `0|1-Strike Foul %`
                     FROM
                       `mlb.statcast_pitches`
                     WHERE
                       game_year = 2023 AND game_type = "R" AND strikes < 2 AND
-                      /* Swing */
-                      description IN ("foul", "hit_into_play", "swinging_strike",
-                        "foul_tip", "swinging_strike_blocked")
+                      description IN ("foul", "hit_into_play", "swinging_strike", "foul_tip", "swinging_strike_blocked") /* Swing */
                     GROUP BY
                       batter;'),
     by = "player_id"
@@ -145,16 +144,13 @@ batters.2023.df <- statcast_leaderboard$batter %>%
   inner_join(
     dbGetQuery(bq, 'SELECT
                       batter player_id,
-                      COUNTIF(description IN ("swinging_strike", "foul_tip",
-                        "swinging_strike_blocked")) / COUNT(*) `2-Strike Whiff %`,
+                      COUNTIF(description IN ("swinging_strike", "foul_tip", "swinging_strike_blocked")) / COUNT(*) `2-Strike Whiff %`,
                       COUNTIF(description = "foul") / COUNT(*) `2-Strike Foul %`
                     FROM
                       `mlb.statcast_pitches`
                     WHERE
                       game_year = 2023 AND game_type = "R" AND strikes = 2 AND
-                      /* Swing */
-                      description IN ("foul", "hit_into_play", "swinging_strike",
-                        "foul_tip", "swinging_strike_blocked")
+                      description IN ("foul", "hit_into_play", "swinging_strike", "foul_tip", "swinging_strike_blocked") /* Swing */
                     GROUP BY
                       batter;'),
     by = "player_id"
@@ -170,16 +166,13 @@ pitchers.2023.df <- statcast_leaderboard$pitcher %>%
   inner_join(
     dbGetQuery(bq, 'SELECT
                       pitcher player_id,
-                      COUNTIF(description IN ("swinging_strike", "foul_tip",
-                        "swinging_strike_blocked")) / COUNT(*) `0|1-Strike Whiff %`,
+                      COUNTIF(description IN ("swinging_strike", "foul_tip", "swinging_strike_blocked")) / COUNT(*) `0|1-Strike Whiff %`,
                       COUNTIF(description = "foul") / COUNT(*) `0|1-Strike Foul %`
                     FROM
                       `mlb.statcast_pitches`
                     WHERE
                       game_year = 2023 AND game_type = "R" AND strikes < 2 AND
-                      /* Swing */
-                      description IN ("foul", "hit_into_play", "swinging_strike",
-                        "foul_tip", "swinging_strike_blocked")
+                      description IN ("foul", "hit_into_play", "swinging_strike", "foul_tip", "swinging_strike_blocked") /* Swing */
                     GROUP BY
                       pitcher;'),
     by = "player_id"
@@ -188,16 +181,13 @@ pitchers.2023.df <- statcast_leaderboard$pitcher %>%
   inner_join(
     dbGetQuery(bq, 'SELECT
                       pitcher player_id,
-                      COUNTIF(description IN ("swinging_strike", "foul_tip",
-                        "swinging_strike_blocked")) / COUNT(*) `2-Strike Whiff %`,
+                      COUNTIF(description IN ("swinging_strike", "foul_tip", "swinging_strike_blocked")) / COUNT(*) `2-Strike Whiff %`,
                       COUNTIF(description = "foul") / COUNT(*) `2-Strike Foul %`
                     FROM
                       `mlb.statcast_pitches`
                     WHERE
                       game_year = 2023 AND game_type = "R" AND strikes = 2 AND
-                      /* Swing */
-                      description IN ("foul", "hit_into_play", "swinging_strike",
-                        "foul_tip", "swinging_strike_blocked")
+                      description IN ("foul", "hit_into_play", "swinging_strike", "foul_tip", "swinging_strike_blocked") /* Swing */
                     GROUP BY
                       pitcher;'),
     by = "player_id"
@@ -312,7 +302,7 @@ ggplotly(
 There is a positive correlation between 0/1-Strike Foul % and 2-Strike Foul % (correlation coefficient of 0.42), but substantial variance exists, too. Take Yordan Alvarez, for example. With 0 or 1 strike, he fouls off only 34.1% of pitches, but that number increases to 46.9% with 2 strikes, which is the highest in all of MLB.
 
 ```{r}
-ggplotly(
+# ggplotly(
   ggplot(
     dbGetQuery(bq, 'WITH
                       team_foul_pct
@@ -327,8 +317,7 @@ ggplotly(
                           `mlb.statcast_pitches`
                         WHERE
                           game_year = 2023 AND game_type = "R" AND
-                          description IN ("foul", "hit_into_play", "swinging_strike",
-                            "foul_tip", "swinging_strike_blocked") /* Swing */
+                          description IN ("foul", "hit_into_play", "swinging_strike", "foul_tip", "swinging_strike_blocked") /* Swing */
                         GROUP BY
                           team,
                           strikes
@@ -363,25 +352,29 @@ ggplotly(
                           team
                       )
                     USING
-                      (team);'),
+                      (team);') %>%
+      left_join(fromJSON("https://statsapi.mlb.com/api/v1/teams?lang=en&sportId=1&season=2023")$teams %>%
+                  mutate(logo = paste("https://www.mlbstatic.com/team-logos/", id, ".svg", sep = "")) %>%
+                  select(abbreviation, logo),
+                by = c("team" = "abbreviation")),
     aes(x = `0|1-Strike Foul %`, y = `2-Strike Foul %`,
         text = paste(team, "\n0/1-Strike Foul %: ",
                      percent(`0|1-Strike Foul %`, accuracy = 0.1),
                      "\n2-Strike Foul %: ",
                      percent(`2-Strike Foul %`, accuracy = 0.1), sep = ""))) +
-    geom_point(col = "#69b3a2") +
+    geom_image(aes(image = logo), size = 0.075, by = "height") +
     labs(title = "2023 Teams (Batting)") +
     scale_x_continuous(labels = percent) +
     scale_y_continuous(labels = percent) +
     geom_abline(linetype = "dotted") +
-    theme(legend.position = "none"),
-  tooltip = "text") %>%
-  layout(annotations = list(
-    list(text = "Hover over any point for team details", x = 0.377, y = 0.3965,
-         font = list(size = 10)),
-    list(text = "y = x", x = 0.388, y = 0.39, font = list(size = 10),
-         showarrow = FALSE))) %>%
-  config(displayModeBar = FALSE)
+    theme(legend.position = "none")#,
+  # tooltip = "text") %>%
+  # layout(annotations = list(
+  #   list(text = "Hover over any point for team details", x = 0.377, y = 0.3965,
+  #        font = list(size = 10)),
+  #   list(text = "y = x", x = 0.388, y = 0.39, font = list(size = 10),
+  #        showarrow = FALSE))) %>%
+  # config(displayModeBar = FALSE)
 ```
 
 ## 2023 Pitchers (min. 200 batters faced)

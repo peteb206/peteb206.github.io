@@ -6,6 +6,12 @@ toc_icon: "bars-staggered"
 excerpt: "How many Canadians are playing college baseball? What are these players' stats? The CBN can tell you because of a web-scraping project I began in 2021."
 header:
   teaser: "/assets/images/Canadian Baseball Network.png"
+sort_value: 2
+tags: [
+    college baseball,
+    web scraping,
+    baseball statistics
+]
 ---
 
 <img src="/assets/images/Canadian Baseball Network.png" class="project-title-image">

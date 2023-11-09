@@ -56,18 +56,7 @@
     }
 
     /* Posts */
-    /* table.post {
-        td {
-            border-bottom: none;
-            padding: 0%;
-        }
-        h2 {
-            margin: 0.25em 0;
-            font-size: 1.75em;
-        }
-        p.page__meta { font-size: 0.8em !important; }
-        p.archive__item-excerpt { font-size: 1em; }
-    } */
+    table.post { overflow-x: visible; }
     table.post td {
         border-bottom: none;
         padding: 0%;
@@ -75,8 +64,24 @@
     table.post h2 {
         padding-bottom: 3px;
         font-size: 1.75em;
+        text-decoration: underline;
     }
     table.post p.page__meta { font-size: 0.8em !important; }
-    table.post p.archive__item-excerpt { font-size: 1em; }
+    table.post p.archive__item-excerpt {
+        font-size: 1em;
+        margin-bottom: 4px;
+    }
+
+    /* Tags */
+    span.item-tag {
+        display: inline-block;
+        /* color: white; */
+        background-color: #e9dcbe;
+        border-radius: 5px;
+        padding: 3px;
+        margin-bottom: 1px;
+        font-size: 0.9em;
+        font-weight: bold;
+    }
 </style>
 <!-- end custom head snippets -->

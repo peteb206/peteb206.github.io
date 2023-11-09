@@ -2,11 +2,15 @@
 title: "Fort Worth Men's Senior Baseball League Website"
 excerpt: "I built a new website for a men's baseball league I play in. The site utilizes Flask, Bootstrap and the Google Sheets API among other technologies."
 header:
-  teaser: "/assets/images/fwmsbl.png"
+  teaser: "/assets/images/FWMSBL.png"
 classes: wide
+sort_value: 4
+tags: [
+    web development
+]
 ---
 
-<img src="/assets/images/fwmsbl.png" class="project-title-image">
+<img src="/assets/images/FWMSBL.png" class="project-title-image">
 
 ## Summary
 I built a new website for a men's baseball league I play in. The old site was through an overpriced service, and it offered limited customizable functionality. The new site includes...

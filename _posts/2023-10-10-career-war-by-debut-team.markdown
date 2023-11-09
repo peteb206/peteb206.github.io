@@ -6,6 +6,10 @@ header:
     teaser: "https://pbs.twimg.com/media/F8GYUBoWEAEkT1e?format=jpg&name=4096x4096"
 link: "https://twitter.com/PeteBerryman/status/1711818907449766233"
 excerpt: "Players who debuted with the St. Louis Cardinals have accumulated the more career fWAR (4,966.6) than any other franchise."
+tags: [
+    mlb history,
+    data visualization
+]
 ---
 
 <!-- Include text for accurate read time -->

@@ -138,18 +138,7 @@
     }
 
     /* Posts */
-    /* table.post {
-        td {
-            border-bottom: none;
-            padding: 0%;
-        }
-        h2 {
-            margin: 0.25em 0;
-            font-size: 1.75em;
-        }
-        p.page__meta { font-size: 0.8em !important; }
-        p.archive__item-excerpt { font-size: 1em; }
-    } */
+    table.post { overflow-x: visible; }
     table.post td {
         border-bottom: none;
         padding: 0%;
@@ -157,9 +146,25 @@
     table.post h2 {
         padding-bottom: 3px;
         font-size: 1.75em;
+        text-decoration: underline;
     }
     table.post p.page__meta { font-size: 0.8em !important; }
-    table.post p.archive__item-excerpt { font-size: 1em; }
+    table.post p.archive__item-excerpt {
+        font-size: 1em;
+        margin-bottom: 4px;
+    }
+
+    /* Tags */
+    span.item-tag {
+        display: inline-block;
+        /* color: white; */
+        background-color: #e9dcbe;
+        border-radius: 5px;
+        padding: 3px;
+        margin-bottom: 1px;
+        font-size: 0.9em;
+        font-weight: bold;
+    }
 </style>
 <!-- end custom head snippets -->
   </head>
@@ -193,9 +198,9 @@
         <ul class="visible-links"><li class="masthead__menu-item">
               <a href="/">Home</a>
             </li><li class="masthead__menu-item">
-              <a href="/posts/">Posts</a>
-            </li><li class="masthead__menu-item">
               <a href="/projects/">Projects & Apps</a>
+            </li><li class="masthead__menu-item">
+              <a href="/posts/">Posts</a>
             </li><li class="masthead__menu-item">
               <a href="/about/">About</a>
             </li></ul>
@@ -282,15 +287,15 @@
       
         
           
-            <li><a href="https://github.com/peteb206" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
-          
-        
-          
             <li><a href="https://www.linkedin.com/in/peteberryman82" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
           
         
           
             <li><a href="https://twitter.com/PeteBerryman" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span class="label">Twitter</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/peteb206" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
           
         
       
@@ -378,10 +383,11 @@
 
       <section class="page__content" itemprop="text">
         
-        
-<div class="entries-list">
+        <div class="entries-list">
   
-    
+    <!-- Based on https://github.com/mmistakes/minimal-mistakes/blob/master/_includes/archive-single.html -->
+
+
 
 
 
@@ -392,22 +398,19 @@
                 
                     
                         <td>
-                            <img src="https://pbs.twimg.com/media/F8GYUBoWEAEkT1e?format=jpg&amp;name=4096x4096" style="max-width: 10em; padding-right: 15px;" />
+                            <a href="https://twitter.com/PeteBerryman/status/1711818907449766233" target="_blank">
+                                
+                                <img src="https://pbs.twimg.com/media/F8GYUBoWEAEkT1e?format=jpg&amp;name=4096x4096" style="max-width: 10em; padding-right: 15px;" />
+                            </a>
                         </td>
                     
                 
                 <td>
-                    <h2 class="archive__item-title no_toc" itemprop="headline">
+                    <a style="text-decoration: none;" href="https://twitter.com/PeteBerryman/status/1711818907449766233" target="_blank">
                         
-                            <a href="https://twitter.com/PeteBerryman/status/1711818907449766233" target="_blank">MLB Career WAR by Debut Team
-</a>
-                            <!-- <a href="/career-war-by-debut-team/" rel="permalink">
-                                <i class="fas fa-link" aria-hidden="true" title="permalink"></i>
-                                <span class="sr-only">Permalink</span>
-                            </a> -->
+                        <h2 class="archive__item-title no_toc" itemprop="headline" style="margin-top: 0.5em;">MLB Career WAR by Debut Team
+</h2>
                         
-                    </h2>
-                    
 
   <p class="page__meta">
     
@@ -435,17 +438,29 @@
   </p>
 
 
-                    
-                        <p class="archive__item-excerpt" itemprop="description">Players who debuted with the St. Louis Cardinals have accumulated the more career fWAR (4,966.6) than any other franchise.
+                        
+                            <p class="archive__item-excerpt" itemprop="description">Players who debuted with the St. Louis Cardinals have accumulated the more career fWAR (4,966.6) than any other franchise.
 </p>
-                    
+                        
+                    </a>
+                    <div class="item-tags">
+                        
+                            
+                                <span class="item-tag">mlb history</span>
+                            
+                                <span class="item-tag">data visualization</span>
+                            
+                        
+                    </div>
                 </td>
             </tr>
         </table>
     </article>
 </div>
   
-    
+    <!-- Based on https://github.com/mmistakes/minimal-mistakes/blob/master/_includes/archive-single.html -->
+
+
 
 
 
@@ -456,22 +471,19 @@
                 
                     
                         <td>
-                            <img src="/assets/images/SAS%20Blog%20Teaser.png" style="max-width: 10em; padding-right: 15px;" />
+                            <a href="https://blogs.sas.com/content/sascom/2020/12/10/competing-in-the-big-leagues-with-or-without-big-money/" target="_blank">
+                                
+                                <img src="/assets/images/SAS%20Blog%20Teaser.png" style="max-width: 10em; padding-right: 15px;" />
+                            </a>
                         </td>
                     
                 
                 <td>
-                    <h2 class="archive__item-title no_toc" itemprop="headline">
+                    <a style="text-decoration: none;" href="https://blogs.sas.com/content/sascom/2020/12/10/competing-in-the-big-leagues-with-or-without-big-money/" target="_blank">
                         
-                            <a href="https://blogs.sas.com/content/sascom/2020/12/10/competing-in-the-big-leagues-with-or-without-big-money/" target="_blank">Competing in the big leagues with or without big money
-</a>
-                            <!-- <a href="/sas-blog/" rel="permalink">
-                                <i class="fas fa-link" aria-hidden="true" title="permalink"></i>
-                                <span class="sr-only">Permalink</span>
-                            </a> -->
+                        <h2 class="archive__item-title no_toc" itemprop="headline" style="margin-top: 0.5em;">Competing in the big leagues with or without big money
+</h2>
                         
-                    </h2>
-                    
 
   <p class="page__meta">
     
@@ -499,10 +511,22 @@
   </p>
 
 
-                    
-                        <p class="archive__item-excerpt" itemprop="description">There is no easy road to success for a MLB team. There are many ways to build a great team, but there are many more ways to build a mediocre team.
+                        
+                            <p class="archive__item-excerpt" itemprop="description">There is no easy road to success for a MLB team. There are many ways to build a great team, but there are many more ways to build a mediocre team.
 </p>
-                    
+                        
+                    </a>
+                    <div class="item-tags">
+                        
+                            
+                                <span class="item-tag">mlb salaries</span>
+                            
+                                <span class="item-tag">baseball analytics</span>
+                            
+                                <span class="item-tag">data visualization</span>
+                            
+                        
+                    </div>
                 </td>
             </tr>
         </table>
@@ -510,7 +534,6 @@
 </div>
   
 </div>
-
 
         
       </section>
@@ -553,15 +576,15 @@
     
       
         
-          <li><a href="https://github.com/peteb206" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
-        
-      
-        
           <li><a href="https://www.linkedin.com/in/peteberryman82" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i> LinkedIn</a></li>
         
       
         
           <li><a href="https://twitter.com/PeteBerryman" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/peteb206" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
         
       
     

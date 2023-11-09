@@ -9,8 +9,8 @@
   <head>
     <meta charset="utf-8">
 
-<!-- begin _includes/seo.html --><title>Fort Worth Men’s Senior Baseball League Website - Pete Berryman</title>
-<meta name="description" content="I built a new website for a men’s baseball league I play in. The site utilizes Flask, Bootstrap and the Google Sheets API among other technologies.">
+<!-- begin _includes/seo.html --><title>PJB Sports Data - Pete Berryman</title>
+<meta name="description" content="A data engineering project to pull sports data from a variety of sources into a data warehouse for efficient querying and analysis.">
 
 
   <meta name="author" content="Pete Berryman">
@@ -22,15 +22,15 @@
 <meta property="og:type" content="article">
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="Pete Berryman">
-<meta property="og:title" content="Fort Worth Men’s Senior Baseball League Website">
-<meta property="og:url" content="http://localhost:4000/projects/fort-worth-mens-senior-baseball-league-website/">
+<meta property="og:title" content="PJB Sports Data">
+<meta property="og:url" content="http://localhost:4000/projects/pjb-sports-data/">
 
 
-  <meta property="og:description" content="I built a new website for a men’s baseball league I play in. The site utilizes Flask, Bootstrap and the Google Sheets API among other technologies.">
+  <meta property="og:description" content="A data engineering project to pull sports data from a variety of sources into a data warehouse for efficient querying and analysis.">
 
 
 
-  <meta property="og:image" content="http://localhost:4000/assets/images/FWMSBL.png">
+  <meta property="og:image" content="http://localhost:4000/assets/images/BigQuery.png">
 
 
 
@@ -43,7 +43,7 @@
 
 
 
-<link rel="canonical" href="http://localhost:4000/projects/fort-worth-mens-senior-baseball-league-website/">
+<link rel="canonical" href="http://localhost:4000/projects/pjb-sports-data/">
 
 
 
@@ -175,7 +175,7 @@
 <!-- end custom head snippets -->
   </head>
 
-  <body class="layout--single wide">
+  <body class="layout--single">
     <nav class="skip-links">
   <ul>
     <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
@@ -254,7 +254,7 @@
     
       
       
-        <li class="current">Fort Worth Men's Senior Baseball League Website</li>
+        <li class="current">PJB Sports Data</li>
       
     
   </ol>
@@ -381,15 +381,15 @@
 
 
   <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
-    <meta itemprop="headline" content="Fort Worth Men’s Senior Baseball League Website">
-    <meta itemprop="description" content="I built a new website for a men’s baseball league I play in. The site utilizes Flask, Bootstrap and the Google Sheets API among other technologies.">
+    <meta itemprop="headline" content="PJB Sports Data">
+    <meta itemprop="description" content="A data engineering project to pull sports data from a variety of sources into a data warehouse for efficient querying and analysis.">
     
     
 
     <div class="page__inner-wrap">
       
         <header>
-          <h1 id="page-title" class="page__title" itemprop="headline">Fort Worth Men’s Senior Baseball League Website
+          <h1 id="page-title" class="page__title" itemprop="headline">PJB Sports Data
 </h1>
           
 
@@ -399,49 +399,103 @@
 
       <section class="page__content" itemprop="text">
         
-        <p><img src="/assets/images/FWMSBL.png" class="project-title-image" /></p>
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-bars-staggered"></i> On this page</h4></header>
+              <ul class="toc__menu"><li><a href="#introduction">Introduction</a></li><li><a href="#central-data-warehouse">Central Data Warehouse</a></li><li><a href="#bigquery">BigQuery</a></li><li><a href="#current-data-sources">Current Data Sources</a></li><li><a href="#links">Links</a></li></ul>
 
-<h2 id="summary">Summary</h2>
-<p>I built a new website for a men’s baseball league I play in. The old site was through an overpriced service, and it offered limited customizable functionality. The new site includes…</p>
-<ul>
-  <li>League standings</li>
-  <li>A user-friendly schedule page</li>
-  <li>The league’s rules</li>
-  <li>Each team’s roster</li>
-  <li>The location of each field where games are played</li>
-  <li>Several necessary forms for prospective/current players to fill out</li>
-</ul>
+            </nav>
+          </aside>
+        
+        <p><img src="/assets/images/BigQuery.png" class="project-title-image" /></p>
 
-<p>To allow the league’s administrators to easily control the content (e.g. game schedule) of the site, the site pulls data from a Google Sheet that they can edit.</p>
-
-<h2 id="technology">Technology</h2>
-<p>Deployment</p>
-<ul>
-  <li>Vercel</li>
-</ul>
-
-<p>Front end</p>
-<ul>
-  <li>HTML</li>
-  <li>JQuery</li>
-  <li>Bootstrap</li>
-</ul>
-
-<p>Back end</p>
-<ul>
-  <li>Python
+<h2 id="introduction">Introduction</h2>
+<p>Much of the MLB research I have done in recent years has involved loading Statcast data from <a href="https://baseballsavant.mlb.com/">Baseball Savant</a>. This publicly-available data provides an incredible opportunity to conduct in-depth studies of what we see happening on the diamond. However, I found that I was left with two options when working with this data:</p>
+<ol>
+  <li>Query all the statcast pitches from a given time range
     <ul>
-      <li>Flask</li>
-      <li>gspread</li>
+      <li>Examples
+        <ul>
+          <li>Python: pybaseball’s <a href="https://github.com/jldbc/pybaseball/blob/master/docs/statcast.md">statcast function</a></li>
+          <li>R: baseballr’s <a href="https://billpetti.github.io/baseballr/reference/statcast_search.html">statcast_search function</a></li>
+        </ul>
+      </li>
+    </ul>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Pros</th>
+          <th>Cons</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Once this data is loaded, it is extremely detailed. There are many analysis options from here</td>
+          <td>Slow: getting all the pitches from 5 days of games takes almost a minute</td>
+        </tr>
+        <tr>
+          <td>Risks bogging down Baseball Savant’s servers</td>
+          <td> </td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>
+    <p>Loading aggregated data</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Pros</th>
+          <th>Cons</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Faster</td>
+          <td>It would only answer one question but new data would have to be queried to address other questions</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+</ol>
+
+<p>In the end, the point of this project is to knock out a lot of the data engineering work that inevitably has to happen with most analytics projects. Hopefully, I will be able to</p>
+
+<h2 id="central-data-warehouse">Central Data Warehouse</h2>
+<p>With this in mind, I decided that I would build out my own sports data warehouse where I could…</p>
+<ol>
+  <li>Efficiently query data from tables</li>
+  <li>Map tables before loading to memory</li>
+  <li>Avoid bogging down external sources by querying daily/weekly/etc. to update my data warehouse</li>
+  <li>Build scripts and dashboards to better understand data</li>
+</ol>
+
+<h2 id="bigquery">BigQuery</h2>
+<p>I chose Google BigQuery as a data warehouse because…</p>
+<ul>
+  <li>10 GB free storage each month</li>
+  <li>1 TB free queries each month</li>
+  <li><a href="https://cloud.google.com/bigquery/docs/introduction-sql">SQL!</a></li>
+  <li>Google Cloud is a valuable skill in the data engineering world</li>
+  <li>Easy connection to Python, R, etc.</li>
+  <li>Easy setup compared to Oracle, in my personal opinion.</li>
+</ul>
+
+<h2 id="current-data-sources">Current Data Sources</h2>
+<ul>
+  <li>MLB
+    <ul>
+      <li><a href="https://baseballsavant.mlb.com/statcast_search">Statcast</a> (via Baseball Savant)</li>
+      <li><a href="https://www.fangraphs.com/roster-resource/injury-report">Injuries</a> (via Fangraphs)</li>
     </ul>
   </li>
 </ul>
 
 <h2 id="links">Links</h2>
-<p><a href="https://www.fortworthmsbl.com/"><i class="fa-solid fa-arrow-up-right-from-square"></i><span class="external-link-label">Link to Website</span></a></p>
-
 <p>For more technical details of the project, visit the<br />
-<a href="https://github.com/peteb206/fwmsbl"><i class="fab fa-fw fa-github"></i><span class="label">GitHub Repository</span></a></p>
+<a href="https://github.com/peteb206/pjb-sports-data"><i class="fab fa-fw fa-github"></i><span class="label">GitHub Repository</span></a></p>
 
         
       </section>
@@ -461,12 +515,11 @@
       
   <nav class="pagination">
     
-      <a href="/projects/canadians-in-college-baseball/" class="pagination--pager" title="Canadians in College Baseball
+      <a href="/projects/fort-worth-mens-senior-baseball-league-website/" class="pagination--pager" title="Fort Worth Men’s Senior Baseball League Website
 ">Previous</a>
     
     
-      <a href="/projects/pjb-sports-data/" class="pagination--pager" title="PJB Sports Data
-">Next</a>
+      <a href="#" class="pagination--pager disabled">Next</a>
     
   </nav>
 

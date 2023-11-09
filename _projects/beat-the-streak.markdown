@@ -4,6 +4,13 @@ excerpt: "A Shiny for Python web app to make better predictions in MLB's Beat th
 header:
   teaser: "/assets/images/Beat the Streak.png"
 classes: wide
+sort_value: 3
+tags: [
+    sabermetrics,
+    statcast,
+    predictive analytics,
+    web development
+]
 ---
 
 <img src="/assets/images/Beat the Streak.png" class="project-title-image">
