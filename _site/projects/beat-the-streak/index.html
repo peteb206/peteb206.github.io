@@ -36,7 +36,7 @@
 
 
 
-  <meta property="article:published_time" content="2023-11-09T10:47:33-06:00">
+  <meta property="article:published_time" content="2023-11-10T17:37:43-06:00">
 
 
 
@@ -167,7 +167,7 @@
         background-color: #e9dcbe;
         border-radius: 5px;
         padding: 3px;
-        margin-bottom: 1px;
+        margin: 3px;
         font-size: 0.9em;
         font-weight: bold;
     }
@@ -414,6 +414,11 @@
 <h2 id="data">Data</h2>
 
 <h2 id="models">Models</h2>
+<p>I am currently using a Logistic Regression classifier to calculate the probability of each player getting a hit on a given day.</p>
+
+<p>The model uses MLB data from 2016 to 2023 and takes in 36 features (all numeric), normalizes them to a -1 to 1 scale, reduces them to X principal components (X is determined how many components it takes to explain 99% of the variance).</p>
+
+<p>When applied to test data (game dates reserved for testing), the model was able to achieve a pick accuracy of 79% and a max streak of 38 when doubling down every day. See <a href="https://github.com/peteb206/bts-shiny/blob/main/models/log_reg.ipynb">log_reg.ipynb</a> and supporting code to see how this model was trained.</p>
 
 <h2 id="app">App</h2>
 <iframe src="https://peteberryman.shinyapps.io/bts-shiny/" width="100%" height="500px"></iframe>

@@ -6,7 +6,10 @@ permalink: /about/
 
 My name is Pete Berryman, and I have loved to play, watch and analyze sports for my whole life.
 
-I created this site to better organize my projects, publicize my work and push myself to seek insight into the sports world and get the information "down on paper".
+I created this site to...
+1. better organize my projects
+2. publicize my work
+3. push myself to seek insight into the sports world and get it "down on paper"
 <!-- For me, it's really fun to ask questions like "which batters excel against starting pitchers but struggle against relievers?" or "what pitchers struggle to put away batters with two strikes?", find the data that is relevant to the question, conduct an analysis and write-up the results. -->
 
 <!--
