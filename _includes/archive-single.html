@@ -26,7 +26,7 @@
                                         href="{{ post.url | relative_url }}">
                                     {% endif %}
                                     <div class="archive__item-teaser">
-                                        <img src="{{ teaser | relative_url }}" alt="">
+                                        <img src="{{ teaser }}" alt="">
                                     </div>
                                 </a>
                             </td>
@@ -40,7 +40,7 @@
                                 {% else %}
                                     href="{{ post.url | relative_url }}">
                                 {% endif %}
-                                <img src="{{ teaser | relative_url }}" style="max-width: 10em; padding-right: 15px;">
+                                <img class="teaser-img-side" src="{{ teaser }}">
                             </a>
                         </td>
                     {% endif %}
@@ -55,7 +55,7 @@
                         <h2 class="archive__item-title no_toc" itemprop="headline" style="margin-top: 0.5em;">{{ title }}</h2>
                         {% include page__meta.html type=include.type %}
                         {% if post.excerpt %}
-                            <p class="archive__item-excerpt" itemprop="description">{{ post.excerpt | markdownify | strip_html | truncate: 160 }}</p>
+                            <p class="archive__item-excerpt" itemprop="description">{{ post.excerpt | markdownify | strip_html | truncate: 180 }}</p>
                         {% endif %}
                     </a>
                     <div class="item-tags">

@@ -1,0 +1,778 @@
+---
+knit: (function(inputFile, encoding) { rmarkdown::render(inputFile, encoding = encoding, output_dir = "../../assets/html") })
+output:
+  html_document:
+    code_folding: hide # https://stackoverflow.com/a/53870441/11760141
+---
+<!--
+R Markdown Reference Guide:
+https://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf
+-->
+<style>
+  h3, h4 {
+    text-align: center;
+  }
+  .column {
+    padding-right: 5ex
+  }
+  .column + .column {
+    padding-left: 5ex
+  }
+</style>
+
+## Introduction
+```{r, message = FALSE, results = 'hide'}
+# Setup
+library(baseballr)
+library(DBI)
+library(bigrquery)
+library(dplyr)
+library(scales)
+library(plotly)
+library(knitr)
+library(kableExtra)
+library(ggimage)
+library(jsonlite)
+
+# BigQuery
+bq <- dbConnect(bigrquery::bigquery(),
+                project = "pjb-sports-data",
+                dataset = "mlb")
+
+# Load Statcast Data
+statcast_leaderboard <- list()
+for (player_type in c("batter", "pitcher")) {
+  statcast_leaderboard[[player_type]] <- statcast_leaderboards(
+    leaderboard = "expected_statistics", year = 2023, min_pa = 1,
+    player_type = player_type
+  )
+}
+```
+We talk often about player tendencies to achieve certain outcomes... a hitter's spray chart, a hitter's launch angle breakdown, a pitcher's pitch distribution, a pitcher's fly ball to ground ball ratio, etc. However, there is a common event that often gets overlooked in baseball analysis: the foul ball. Every now and then, a stat about foul balls will emerge, such as how  [Joey Votto pulled one foul ball into the seats over the first 2,138 plate appearances of his career](https://www.si.com/more-sports/2012/06/05/joey-vottoreds), but more attention is lent to the pitches that are put in play, watched or whiffed at.
+
+```{r}
+'
+SELECT
+  description,
+  count / total `%`
+FROM
+  (
+    SELECT
+      1 foo,
+      description,
+      COUNT(*) count
+    FROM
+      (
+        SELECT
+          REGEXP_REPLACE(description, "_*blocked_*", "") description,
+        FROM
+          `mlb.statcast_pitches`
+        WHERE
+          game_year = 2023 AND game_type = "R"
+      )
+    GROUP BY
+      description
+  )
+JOIN
+  (
+    SELECT
+      1 foo,
+      COUNT(*) total
+    FROM
+      `mlb.statcast_pitches`
+    WHERE
+      game_year = 2023 AND game_type = "R"
+  )
+USING
+  (foo);
+' %>%
+  dbGetQuery(bq, .) %>%
+  ggplot(aes(reorder(description, -`%`), `%`)) +
+  geom_bar(stat = "identity", fill = "#0099f9") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(title = "2023 Pitch Results", x = "", y = "Frequency") +
+  scale_y_continuous(labels = percent, limits = c(0, 0.4)) +
+  geom_text(aes(label = percent(`%`, accuracy = 0.1)), vjust = -0.5, size = 3)
+```
+
+Foul balls make up nearly 18% of pitch outcomes and can be interpreted in a number of different ways. With less than two strikes...
+
+* the pitch wasn't really what the batter was looking for, but he swung anyway.
+* the batter's swing or timing was slightly off.
+
+With two strikes...
+
+* the batter is just trying to stay alive with two strikes.
+* the pitch wasn't located well enough or wasn't deceptive enough to miss the bat entirely.
+
+```{r}
+'
+WITH swing_results_by_year AS
+  (
+    SELECT
+      game_year,
+      CASE description WHEN "foul" THEN description
+                       WHEN "hit_into_play" THEN description
+                       ELSE "swinging_strike" END swing_result,
+      COUNT(*) pitch_count
+    FROM
+      `mlb.statcast_pitches`
+    WHERE
+      game_type = "R" AND description IN ("foul", "hit_into_play", "swinging_strike",
+                                          "foul_tip", "swinging_strike_blocked")
+    GROUP BY
+      game_year,
+      swing_result
+  )
+
+SELECT
+  game_year,
+  swing_result,
+  pitch_count / total_pitches `%`
+FROM
+  swing_results_by_year
+JOIN
+  (
+    SELECT
+      game_year,
+      SUM(pitch_count) total_pitches
+    FROM
+      swing_results_by_year
+    GROUP BY
+      game_year
+  )
+USING
+  (game_year);
+' %>%
+  dbGetQuery(bq, .) %>%
+  ggplot(aes(x = game_year, y = `%`, label = `%`,
+             fill = factor(swing_result, levels = c("swinging_strike", "hit_into_play",
+                                                    "foul")))) +
+  geom_bar(stat = "identity") +
+  scale_x_continuous(breaks = seq(2016, 2023, 1)) +
+  scale_y_continuous(labels = percent) +
+  geom_text(aes(label = percent(`%`, accuracy = 0.1)),
+            position = position_stack(vjust = 0.5), size = 3) +
+  labs(title = "Swing Results: 2016-2023", x = "", y = "", fill = "result")
+```
+
+The last eight seasons have seen some variety in terms of the percentage of swings that have resulted in swinging strikes and balls hit into play, but the foul ball rate has stayed fairly steady, with the exception of 2020, which had a much smaller sample size.
+
+```{r}
+'
+WITH swing_results_by_count AS
+  (
+    SELECT
+      balls,
+      strikes,
+      CASE description WHEN "foul" THEN description
+                       WHEN "hit_into_play" THEN description
+                       ELSE "swinging_strike" END swing_result,
+      COUNT(*) pitch_count
+    FROM
+      `mlb.statcast_pitches`
+    WHERE
+      game_year = 2023 AND game_type = "R" AND balls < 4 AND
+      description IN ("foul", "hit_into_play", "swinging_strike",
+                      "foul_tip", "swinging_strike_blocked")
+    GROUP BY
+      balls,
+      strikes,
+      swing_result
+  )
+
+SELECT
+  balls,
+  strikes,
+  CONCAT(CAST(balls as STRING), "-", CAST(strikes as STRING)) count,
+  swing_result,
+  pitch_count / total_pitches `%`
+FROM
+  swing_results_by_count
+JOIN
+  (
+    SELECT
+      balls,
+      strikes,
+      SUM(pitch_count) total_pitches
+    FROM
+      swing_results_by_count
+    GROUP BY
+      balls,
+      strikes
+  )
+USING
+  (balls, strikes);
+' %>%
+  dbGetQuery(bq, .) %>%
+  ggplot(aes(x = count, y = `%`, label = `%`,
+             fill = factor(swing_result, levels = c("swinging_strike", "hit_into_play",
+                                                    "foul")))) +
+  geom_bar(stat = "identity") +
+  scale_y_continuous(labels = percent) +
+  geom_text(aes(label = percent(`%`, accuracy = 0.1)),
+            position = position_stack(vjust = 0.5), size = 3) +
+  labs(title = "2023 Swing Results by Count", x = "Count", y = "", fill = "result")
+```
+
+As batters get deeper into counts, they seem to become less likely to whiff and more likely to put the ball in play or foul it off. This makes sense considering that pitchers can have an element of surprise against hitters who have not seen many of their pitches. Hitters are known to learn from pitch to pitch, hone in on what a pitcher has to offer and adjust to the pitcher's plan of attack.
+
+Fouls can feel like a neutral outcome when they happen on the field, but they are almost always a positive outcome for either the pitcher or the hitter. For example, with less than two strikes, a foul ball is a positive outcome for the pitcher. Certain foul balls, like a towering drive that hooks foul, can indicate that the batter has the upper hand, but it still counts like any other strike, and the pitcher can breath a sigh of relief. When there are two strikes, a foul ball is always going to feel like the batter held strong, and the pitcher is annoyed that he has to throw another pitch. In short, a foul ball is a win for the pitcher with less than 2 strikes, and it is a win for the hitter with 2 strikes. With this in mind, I wanted to split hitter and pitcher foul ball tendencies based on the count.
+
+```{r, message = FALSE}
+batters.2023.df <- statcast_leaderboard$batter %>%
+  filter(pa >= 200) %>%
+  mutate(Name = sub("(.+),\\s(.+)","\\2 \\1", `last_name, first_name`)) %>%
+  select(-year, -`last_name, first_name`, -est_ba_minus_ba_diff,
+         -est_slg_minus_slg_diff, -est_woba_minus_woba_diff) %>%
+  rename(PA = pa) %>%
+  # All pitches
+  inner_join(
+    '
+    SELECT
+      batter player_id,
+      COUNTIF(description IN ("swinging_strike", "foul_tip", "swinging_strike_blocked"))
+                / COUNT(*) `0|1-Strike Whiff %`,
+      COUNTIF(description = "foul") / COUNT(*) `0|1-Strike Foul %`
+    FROM
+      `mlb.statcast_pitches`
+    WHERE
+      game_year = 2023 AND game_type = "R" AND strikes < 2 AND
+      description IN ("foul", "hit_into_play", "swinging_strike", "foul_tip",
+                      "swinging_strike_blocked") /* Swing */
+    GROUP BY
+      batter;
+    ' %>%
+      dbGetQuery(bq, .),
+    by = "player_id"
+  ) %>%
+  # 2-Strikes
+  inner_join(
+    '
+    SELECT
+      batter player_id,
+      COUNTIF(description IN ("swinging_strike", "foul_tip", "swinging_strike_blocked"))
+        / COUNT(*) `2-Strike Whiff %`,
+      COUNTIF(description = "foul") / COUNT(*) `2-Strike Foul %`
+    FROM
+      `mlb.statcast_pitches`
+    WHERE
+      game_year = 2023 AND game_type = "R" AND strikes = 2 AND
+      description IN ("foul", "hit_into_play", "swinging_strike", "foul_tip",
+                      "swinging_strike_blocked") /* Swing */
+    GROUP BY
+      batter;
+    ' %>%
+    dbGetQuery(bq, .),
+    by = "player_id"
+  ) %>%
+  rename(`0/1-Strike Whiff %` = `0|1-Strike Whiff %`,
+         `0/1-Strike Foul %` = `0|1-Strike Foul %`)
+
+pitchers.2023.df <- statcast_leaderboard$pitcher %>%
+  filter(pa >= 200) %>%
+  mutate(Name = sub("(.+),\\s(.+)","\\2 \\1", `last_name, first_name`)) %>%
+  select(-year, -`last_name, first_name`, -est_ba_minus_ba_diff,
+         -est_slg_minus_slg_diff, -est_woba_minus_woba_diff) %>%
+  rename(TBF = pa) %>%
+  # All pitches
+  inner_join(
+    '
+    SELECT
+      pitcher player_id,
+      COUNTIF(description IN ("swinging_strike", "foul_tip", "swinging_strike_blocked"))
+        / COUNT(*) `0|1-Strike Whiff %`,
+      COUNTIF(description = "foul") / COUNT(*) `0|1-Strike Foul %`
+    FROM
+      `mlb.statcast_pitches`
+    WHERE
+      game_year = 2023 AND game_type = "R" AND strikes < 2 AND
+      description IN ("foul", "hit_into_play", "swinging_strike", "foul_tip",
+                      "swinging_strike_blocked") /* Swing */
+    GROUP BY
+      pitcher;
+    ' %>%
+      dbGetQuery(bq, .),
+    by = "player_id"
+  ) %>%
+  # 2-Strikes
+  inner_join(
+    '
+    SELECT
+      pitcher player_id,
+      COUNTIF(description IN ("swinging_strike", "foul_tip", "swinging_strike_blocked"))
+        / COUNT(*) `2-Strike Whiff %`,
+      COUNTIF(description = "foul") / COUNT(*) `2-Strike Foul %`
+    FROM
+      `mlb.statcast_pitches`
+    WHERE
+      game_year = 2023 AND game_type = "R" AND strikes = 2 AND
+      description IN ("foul", "hit_into_play", "swinging_strike", "foul_tip",
+                      "swinging_strike_blocked") /* Swing */
+    GROUP BY
+      pitcher;
+    ' %>%
+      dbGetQuery(bq, .),
+    by = "player_id"
+  ) %>%
+  rename(`0/1-Strike Whiff %` = `0|1-Strike Whiff %`,
+         `0/1-Strike Foul %` = `0|1-Strike Foul %`)
+```
+
+## 2023 Batters (min. 200 PAs)
+First, I want to highlight the extremes: the guys who hit a ton of foul balls and the guys who hit very few.
+
+::::: columns
+::: column
+### 0/1-Strike Foul %
+:::
+::: column
+### 2-Strike Foul %
+:::
+:::::
+#### 10 Highest
+::::: columns
+::: column
+```{r}
+batters.2023.df %>%
+  select(Name, PA, `0/1-Strike Foul %`) %>%
+  arrange(desc(`0/1-Strike Foul %`)) %>%
+  mutate(`0/1-Strike Foul %` = percent(`0/1-Strike Foul %`, accuracy = 0.01)) %>%
+  head(10) %>%
+  kable() %>%
+  kable_styling(bootstrap_options = c("bordered", "striped"))
+```
+:::
+::: column
+```{r}
+batters.2023.df %>%
+  select(Name, PA, `2-Strike Foul %`) %>%
+  arrange(desc(`2-Strike Foul %`)) %>%
+  mutate(`2-Strike Foul %` = percent(`2-Strike Foul %`, accuracy = 0.01)) %>%
+  head(10) %>%
+  kable() %>%
+  kable_styling(bootstrap_options = c("bordered", "striped"))
+```
+:::
+:::::
+
+#### 10 Lowest
+
+::::: columns
+::: column
+```{r}
+batters.2023.df %>%
+  select(Name, PA, `0/1-Strike Foul %`) %>%
+  arrange(`0/1-Strike Foul %`) %>%
+  mutate(`0/1-Strike Foul %` = percent(`0/1-Strike Foul %`, accuracy = 0.01)) %>%
+  head(10) %>%
+  kable() %>%
+  kable_styling(bootstrap_options = c("bordered", "striped"))
+```
+:::
+::: column
+```{r}
+batters.2023.df %>%
+  select(Name, PA, `2-Strike Foul %`) %>%
+  arrange(`2-Strike Foul %`) %>%
+  mutate(`2-Strike Foul %` = percent(`2-Strike Foul %`, accuracy = 0.01)) %>%
+  head(10) %>%
+  kable() %>%
+  kable_styling(bootstrap_options = c("bordered", "striped"))
+```
+:::
+:::::
+
+```{r}
+# https://plotly.com/ggplot2/configuration-options/
+# Highlight POIs: https://thiyanga.netlify.app/post/scatterplot/
+batter.scatter.plot.df <- batters.2023.df %>%
+  mutate(diff = `2-Strike Foul %` - `0/1-Strike Foul %`,
+         color = as.factor(
+           ifelse(diff >= 0.06, "#025189",
+                  ifelse(diff >= 0.03, "#0c9cb4",
+                         ifelse(diff >= 0, "#94c280",
+                                ifelse(diff >= -0.03, "#f1c359",
+                                       ifelse(diff >= -0.06, "#d03f2e",
+                                              "#982123"))))))) %>%
+  select(Name, `2-Strike Foul %`, `0/1-Strike Foul %`, color)
+
+(batter.scatter.plot.df %>%
+  ggplot(
+    aes(x = `0/1-Strike Foul %`, y = `2-Strike Foul %`,
+        text = paste(Name, "\n0/1-Strike Foul %: ",
+                     percent(`0/1-Strike Foul %`, accuracy = 0.1),
+                     "\n2-Strike Foul %: ",
+                     percent(`2-Strike Foul %`, accuracy = 0.1), sep = ""))) +
+    geom_point(aes(color = color)) +
+    scale_colour_manual(values = levels(batter.scatter.plot.df$color)) +
+    labs(title = "2023 Batters (min. 200 PAs)") +
+    scale_x_continuous(labels = percent) +
+    scale_y_continuous(labels = percent) +
+    geom_abline(linetype = "dotted") +
+    theme(legend.position = "none")) %>%
+  ggplotly(tooltip = "text") %>%
+  layout(annotations = list(
+    list(text = "Hover over any point for player details", x = 0.437, y = 0.462,
+         font = list(size = 10)),
+    list(text = "y = x", x = 0.484, y = 0.476, font = list(size = 10),
+         showarrow = FALSE))) %>%
+  config(displayModeBar = FALSE)
+```
+
+There is a positive correlation between 0/1-Strike Foul % and 2-Strike Foul % (correlation coefficient of 0.42), but substantial variance exists, too. Take Yordan Alvarez, for example. With less than 2 strikes, he fouls off only 34.1% of pitches, but that number increases to 46.9% with 2 strikes, which is the highest in all of MLB.
+
+```{r}
+(
+  'WITH
+     team_foul_pct
+   AS
+     (
+       SELECT
+         CASE inning_topbot WHEN "top" THEN away_team ELSE home_team END team,
+         strikes,
+         COUNTIF(description = "foul") fouls,
+         COUNT(*) pitches,
+       FROM
+         `mlb.statcast_pitches`
+       WHERE
+         game_year = 2023 AND game_type = "R" AND
+         description IN ("foul", "hit_into_play", "swinging_strike",
+                         "foul_tip", "swinging_strike_blocked") /* Swing */
+       GROUP BY
+         team,
+         strikes
+     )
+  
+   SELECT
+     team,
+     `0|1-Strike Foul %`,
+     `2-Strike Foul %`
+   FROM
+     (
+       SELECT
+         team,
+         SUM(fouls) / SUM(pitches) `0|1-Strike Foul %`
+       FROM
+         team_foul_pct
+       WHERE
+         strikes < 2
+       GROUP BY
+         team
+     )
+   JOIN
+     (
+       SELECT
+         team,
+         SUM(fouls) / SUM(pitches) `2-Strike Foul %`
+       FROM
+         team_foul_pct
+       WHERE
+         strikes = 2
+       GROUP BY
+         team
+     )
+   USING
+     (team);' %>%
+    dbGetQuery(bq, .) %>%
+    rename(`0/1-Strike Foul %` = `0|1-Strike Foul %`) %>%
+    left_join(fromJSON("https://statsapi.mlb.com/api/v1/teams?lang=en&sportId=1&season=2023")$teams %>%
+                mutate(logo = paste("https://www.mlbstatic.com/team-logos/", id, ".svg", sep = "")) %>%
+                select(abbreviation, logo),
+              by = c("team" = "abbreviation")) %>%
+    ggplot(aes(x = `0/1-Strike Foul %`, y = `2-Strike Foul %`,
+               text = paste(team, "\n0/1-Strike Foul %: ",
+                            percent(`0/1-Strike Foul %`, accuracy = 0.1),
+                            "\n2-Strike Foul %: ",
+                            percent(`2-Strike Foul %`, accuracy = 0.1), sep = ""))) +
+    geom_image(aes(image = logo), size = 0.075, by = "height") +
+    labs(title = "2023 Teams (Batting)") +
+    scale_x_continuous(labels = percent) +
+    scale_y_continuous(labels = percent) +
+    geom_abline(linetype = "dotted") +
+    theme(legend.position = "none")) #%>%
+# ggplotly(tooltip = "text") %>%
+# layout(annotations = list(
+#   list(text = "Hover over any point for team details", x = 0.377, y = 0.3965,
+#        font = list(size = 10)),
+#   list(text = "y = x", x = 0.388, y = 0.39, font = list(size = 10),
+#        showarrow = FALSE))) %>%
+# config(displayModeBar = FALSE)
+```
+It is surprising to see that the top 2 run-scoring offenses in 2023 (Braves and Dodgers) are both below the dotted line here. Meanwhile, struggling offenses like the Royals and A's both have a much higher 2-Strike Foul % than 0/1-Strike Foul %.
+
+## 2023 Pitchers (min. 200 batters faced)
+Similar to how certain hitters are much more foul ball prone than others, pitchers can be the same way.
+
+::::: columns
+::: column
+### 0/1-Strike Foul %
+:::
+::: column
+### 2-Strike Foul %
+:::
+:::::
+#### 10 Highest
+::::: columns
+::: column
+```{r}
+pitchers.2023.df %>%
+  select(Name, TBF, `0/1-Strike Foul %`) %>%
+  arrange(desc(`0/1-Strike Foul %`)) %>%
+  mutate(`0/1-Strike Foul %` = percent(`0/1-Strike Foul %`, accuracy = 0.01)) %>%
+  head(10) %>%
+  kable() %>%
+  kable_styling(bootstrap_options = c("bordered", "striped"))
+```
+:::
+::: column
+```{r}
+pitchers.2023.df %>%
+  select(Name, TBF, `2-Strike Foul %`) %>%
+  arrange(desc(`2-Strike Foul %`)) %>%
+  mutate(`2-Strike Foul %` = percent(`2-Strike Foul %`, accuracy = 0.01)) %>%
+  head(10) %>%
+  kable() %>%
+  kable_styling(bootstrap_options = c("bordered", "striped"))
+```
+:::
+:::::
+
+#### 10 Lowest
+
+::::: columns
+::: column
+```{r}
+pitchers.2023.df %>%
+  select(Name, TBF, `0/1-Strike Foul %`) %>%
+  arrange(`0/1-Strike Foul %`) %>%
+  mutate(`0/1-Strike Foul %` = percent(`0/1-Strike Foul %`, accuracy = 0.01)) %>%
+  head(10) %>%
+  kable() %>%
+  kable_styling(bootstrap_options = c("bordered", "striped"))
+```
+:::
+::: column
+```{r}
+pitchers.2023.df %>%
+  select(Name, TBF, `2-Strike Foul %`) %>%
+  arrange(`2-Strike Foul %`) %>%
+  mutate(`2-Strike Foul %` = percent(`2-Strike Foul %`, accuracy = 0.01)) %>%
+  head(10) %>%
+  kable() %>%
+  kable_styling(bootstrap_options = c("bordered", "striped"))
+```
+:::
+:::::
+
+```{r}
+# https://plotly.com/ggplot2/configuration-options/
+# Highlight POIs: https://thiyanga.netlify.app/post/scatterplot/
+pitcher.scatter.plot.df <- pitchers.2023.df %>%
+  mutate(diff = `2-Strike Foul %` - `0/1-Strike Foul %`,
+         color = as.factor(
+           ifelse(diff >= 0.06, "#982123",
+                  ifelse(diff >= 0.03, "#d03f2e",
+                         ifelse(diff >= 0, "#f1c359",
+                                ifelse(diff >= -0.03, "#94c280",
+                                       ifelse(diff >= -0.06, "#0c9cb4",
+                                              "#025189"))))))) %>%
+  select(Name, `2-Strike Foul %`, `0/1-Strike Foul %`, color)
+
+(pitcher.scatter.plot.df %>%
+  ggplot(
+    aes(x = `0/1-Strike Foul %`, y = `2-Strike Foul %`,
+        text = paste(Name, "\n0/1-Strike Foul %: ",
+                     percent(`0/1-Strike Foul %`, accuracy = 0.1),
+                     "\n2-Strike Foul %: ",
+                     percent(`2-Strike Foul %`, accuracy = 0.1), sep = ""))) +
+    geom_point(aes(color = color)) +
+    scale_colour_manual(values = levels(pitcher.scatter.plot.df$color)) +
+    labs(title = "2023 Pitchers (min. 200 batters faced)") +
+    scale_x_continuous(labels = percent) +
+    scale_y_continuous(labels = percent) +
+    geom_abline(linetype = "dotted") +
+    theme(legend.position = "none")) %>%
+  ggplotly(tooltip = "text") %>%
+  layout(annotations = list(
+    list(text = "Hover over any point for player details", x = 0.316, y = 0.444,
+         font = list(size = 10)),
+    list(text = "y = x", x = 0.461, y = 0.47, font = list(size = 10),
+         showarrow = FALSE))) %>%
+  config(displayModeBar = FALSE)
+```
+
+## Do foul ball tendencies relate to K%
+Foul balls never end an at bat, but they can have an affect on the eventual outcome of an at bat, either by adding a strike to the count or keeping the batter alive for another pitch. While I was not able to see much of a relationship between 0/1-Strike Foul % and wOBA or 2-Strike Foul % and wOBA, there were some noteworthy trends when comparing the Foul % stats to K%.
+```{r}
+# Add K%
+batters.2023.df <- batters.2023.df %>%
+  select(-starts_with("K")) %>%
+  left_join(
+    '
+    SELECT
+      batter player_id,
+      COUNT(*) K
+    FROM
+      `mlb.statcast_pitches`
+    WHERE
+      game_year = 2023 AND game_type = "R" AND
+      events IN("strikeout", "strikeout_double_play")
+    GROUP BY
+      batter;
+    ' %>%
+      dbGetQuery(bq, .), by = "player_id") %>%
+  mutate(`K%` = K / PA)
+
+k.pct.lm.0.1 <- lm(`K%` ~ `0/1-Strike Foul %`, data = batters.2023.df)
+k.pct.lm.2 <- lm(`K%` ~ `2-Strike Foul %`, data = batters.2023.df)
+
+batters.2023.df %>%
+  ggplot(aes(x = `0/1-Strike Foul %`, y = `K%`,
+             text = paste(Name, "\n0/1-Strike Foul %: ",
+                          percent(`0/1-Strike Foul %`, accuracy = 0.1), "\nK%: ",
+                          percent(`K%`, accuracy = 0.1), sep = ""))) +
+  geom_point(color = "#0c9cb4") +
+  labs(title = "2023 Batters (min. 200 PAs)") +
+  scale_x_continuous(labels = percent) +
+  scale_y_continuous(labels = percent) +
+  theme(legend.position = "none") +
+  geom_abline(slope = k.pct.lm.0.1$coefficients[2],
+              intercept = k.pct.lm.0.1$coefficients[1], color = "#BD9B60",
+              linewidth = 0.5) +
+  annotate("label", x = 0.45, y = 0.4, hjust = 0,
+           label = paste("r =", round(cor(batters.2023.df$`K%`,
+                                          batters.2023.df$`0/1-Strike Foul %`), 2)))
+
+batters.2023.df %>%
+  ggplot(aes(x = `2-Strike Foul %`, y = `K%`,
+             text = paste(Name, "\n2-Strike Foul %: ",
+                          percent(`2-Strike Foul %`, accuracy = 0.1), "\nK%: ",
+                          percent(`K%`, accuracy = 0.1), sep = ""))) +
+  geom_point(color = "#0c9cb4") +
+  labs(title = "2023 Batters (min. 200 PAs)") +
+  scale_x_continuous(labels = percent) +
+  scale_y_continuous(labels = percent) +
+  theme(legend.position = "none") +
+  geom_abline(slope = k.pct.lm.2$coefficients[2],
+              intercept = k.pct.lm.2$coefficients[1], color = "#BD9B60",
+              linewidth = 0.5) +
+  annotate("label", x = 0.45, y = 0.4, hjust = 0,
+           label = paste("r =", round(cor(batters.2023.df$`K%`,
+                                          batters.2023.df$`2-Strike Foul %`), 2)))
+```
+
+Not surprisingly, there is a trend that batters whose 2-strike swings often result in fouls tend to strike out less often. However, I am surprised that frequent foul hitters with less than two strikes also tend to strike out less. With those types of fouls, a batter is getting one strike closer to a potential strikeout, but as we learned earlier, these same guys tend to also foul off lots of two-strike pitches and stay alive.
+
+While these trends are notable for batters, we see much less correlation between foul balls and strikeouts with pitchers:
+
+```{r}
+# Add K%
+pitchers.2023.df <- pitchers.2023.df %>%
+  select(-starts_with("K")) %>%
+  left_join(
+    '
+    SELECT
+      pitcher player_id,
+      COUNT(*) K
+    FROM
+      `mlb.statcast_pitches`
+    WHERE
+      game_year = 2023 AND game_type = "R" AND
+      events IN("strikeout", "strikeout_double_play")
+    GROUP BY
+      pitcher;
+    ' %>%
+      dbGetQuery(bq, .), by = "player_id") %>%
+  mutate(`K%` = K / TBF)
+
+k.pct.lm.0.1 <- lm(`K%` ~ `0/1-Strike Foul %`, data = pitchers.2023.df)
+k.pct.lm.2 <- lm(`K%` ~ `2-Strike Foul %`, data = pitchers.2023.df)
+
+pitchers.2023.df %>%
+  ggplot(aes(x = `0/1-Strike Foul %`, y = `K%`,
+             text = paste(Name, "\n0/1-Strike Foul %: ",
+                          percent(`0/1-Strike Foul %`, accuracy = 0.1), "\nK%: ",
+                          percent(`K%`, accuracy = 0.1), sep = ""))) +
+  geom_point(color = "#d03f2e") +
+  labs(title = "2023 Pitchers (min. 200 batters faced)") +
+  scale_x_continuous(labels = percent) +
+  scale_y_continuous(labels = percent) +
+  theme(legend.position = "none") +
+  geom_abline(slope = k.pct.lm.0.1$coefficients[2],
+              intercept = k.pct.lm.0.1$coefficients[1], color = "#BD9B60",
+              linewidth = 0.5) +
+  annotate("label", x = 0.425, y = 0.4, hjust = 0,
+           label = paste("r =", round(cor(pitchers.2023.df$`K%`,
+                                          pitchers.2023.df$`0/1-Strike Foul %`), 2)))
+
+pitchers.2023.df %>%
+  ggplot(aes(x = `2-Strike Foul %`, y = `K%`,
+             text = paste(Name, "\n2-Strike Foul %: ",
+                          percent(`2-Strike Foul %`, accuracy = 0.1), "\nK%: ",
+                          percent(`K%`, accuracy = 0.1), sep = ""))) +
+  geom_point(color = "#d03f2e") +
+  labs(title = "2023 Pitchers (min. 200 batters faced)") +
+  scale_x_continuous(labels = percent) +
+  scale_y_continuous(labels = percent) +
+  theme(legend.position = "none") +
+  geom_abline(slope = k.pct.lm.2$coefficients[2],
+              intercept = k.pct.lm.2$coefficients[1], color = "#BD9B60",
+              linewidth = 0.5) +
+  annotate("label", x = 0.45, y = 0.4, hjust = 0,
+           label = paste("r =", round(cor(pitchers.2023.df$`K%`,
+                                          pitchers.2023.df$`2-Strike Foul %`), 2)))
+```
+
+## Hard hit foul balls?
+Since Statcast still tracks the exit velocity of foul balls, I wanted to examine not just the frequency with which players hit foul balls, but also how hard they are hitting them (Avg. EV and Hard Hit %)
+```{r}
+(batters.2023.df %>%
+  left_join(
+    '
+    SELECT
+      batter player_id,
+    SAFE_DIVIDE(COUNTIF(launch_speed >= 95 AND description = "hit_into_play"),
+                COUNTIF(description = "hit_into_play")) `Hard-Hit %`,
+    SAFE_DIVIDE(COUNTIF(launch_speed >= 95 AND description = "foul"),
+                COUNTIF(description = "foul")) `Foul Balls Hard-Hit %`
+    FROM
+      `mlb.statcast_pitches`
+    WHERE
+      game_year = 2023 AND game_type = "R" AND
+      launch_speed IS NOT NULL
+    GROUP BY
+      batter;
+    ' %>%
+      dbGetQuery(bq, .) %>%
+      rename(`Fair Balls: Hard-Hit %` = `Hard-Hit %`,
+             `Foul Balls: Hard-Hit %` = `Foul Balls Hard-Hit %`),
+    by = "player_id") %>%
+  ggplot(aes(x = `Foul Balls: Hard-Hit %`, y = `Fair Balls: Hard-Hit %`,
+           text = paste(Name, "\nFoul Balls Hard-Hit %: ",
+                        percent(`Foul Balls: Hard-Hit %`, accuracy = 0.1),
+                        "\nFair Balls Hard-Hit %: ",
+                        percent(`Fair Balls: Hard-Hit %`, accuracy = 0.1),
+                        sep = ""))) +
+  geom_point(color = "#0c9cb4") +
+  labs(title = "2023 Batters (min. 200 PAs)") +
+  scale_x_continuous(labels = percent) +
+  scale_y_continuous(labels = percent) +
+  theme(legend.position = "none") +
+  geom_abline(linetype = "dotted")) %>%
+  ggplotly(tooltip = "text") %>%
+  layout(annotations = list(
+    list(text = "Hover over any point for player details", x = 0.171, y = 0.492,
+         font = list(size = 10)))) %>%
+  config(displayModeBar = FALSE)
+```
+
+Obviously, no players are going to have a higher hard-hit rate (95 mph off the bat or higher) on foul balls than fair balls, but some players do waste their solid contact by spraying lasers into foul territory. Isaac Paredes had 2023's smallest disparity between hard-hit rate on fair balls and foul balls. Given that he has pulled every single one of his 53 career homers to left field, it is easy to envision him catching some balls on the barrel but too far out in front.
+
+## Main Takeways and Future Explorations
+In the end, we see successful hitters and pitchers all over the map in terms of how often and when they hit/give up foul balls. In general, hitters whose swings result in a lot of foul balls tend to strike out less, but the trends are not strong enough to declare that fouling off more pitches should be a key part of a hitter's approach. This investigation was never meant to uncover a new key metric for hitters and pitchers. Instead, I wanted to try and learn something from a frequent pitch outcome that is infrequently discussed. The main takeaway is that there are some players of interest whose approaches are worth examining further after seeing their tendencies relating to foul balls.
+
+Yordan Alvarez reputation as a bruising slugger makes it surprising that he is excellent at spoiling two-strike pitches and prolonging at bats. On the flip side, Jazz Chisholm, Jr. is a young star who hits very few foul balls and shows a lot of promise at the plate. One pitcher that stood out in this study is Alexis Diaz. The young Reds closer sees a 13.4% decrease in Foul % on two-strike swings versus swings with less than two strikes. Given his recent success and ability to miss bats, it would be interesting to know what he does differently in potential strikeout scenarios.
+```{r}
+dbDisconnect(bq)
+```

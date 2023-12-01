@@ -1,3 +1,4 @@
 test*
 ref/dev.txt
 **/rsconnect
+.Rhistory

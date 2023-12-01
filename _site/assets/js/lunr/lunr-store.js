@@ -2,20 +2,26 @@ var store = [{
         "title": "Competing in the big leagues with or without big money",
         "excerpt":"In recent years, we have seen some astronomical contracts given to professional athletes. Major League Baseball (MLB) has certainly had its share. One of its first notable “megadeals” was when Alex Rodriguez, the Seattle Mariners’ power-hitting shortstop, left the team to join the Texas Rangers in 2001. The Rangers committed...","categories": [],
         "tags": ["mlb salaries","baseball analytics","data visualization"],
-        "url": "/sas-blog/",
+        "url": "/posts/sas-blog/",
         "teaser": "/assets/images/SAS%20Blog%20Teaser.png"
       },{
         "title": "MLB Career WAR by Debut Team",
         "excerpt":"Players who debuted with the St. Louis Cardinals have accumulated more career fWAR (4,966.6) than any other franchise. 1,053 players can say they debuted with the Cardinals, which also leads the MLB. The 767 players first called up by the Yankees have averaged a 5.76 career fWAR (most in MLB)....","categories": [],
         "tags": ["mlb history","data visualization"],
-        "url": "/career-war-by-debut-team-tweet/",
+        "url": "/posts/career-war-by-debut-team-tweet/",
         "teaser": "https://pbs.twimg.com/media/F8GYUBoWEAEkT1e?format=jpg&name=4096x4096"
       },{
         "title": "Best Non-Injured Pitchers from 2020 to 2023",
         "excerpt":"  Healthy arms: here are the Top 10 pitching fWAR and innings pitched from 2020 to 2023 among pitchers who never appeared on the Fangraphs’ injury report during those years.   @JOLaMaKina  stands out for with his combination of performance and durability. #MLB  ","categories": [],
         "tags": ["mlb injuries"],
-        "url": "/non-injured-pitchers-2020-to-2023-tweet/",
+        "url": "/posts/non-injured-pitchers-2020-to-2023-tweet/",
         "teaser": "/assets/images/Jose%20Berrios.jpeg"
+      },{
+        "title": "A Spotlight on Foul Balls",
+        "excerpt":"The text and figures were built from an R Markdown notebook:   ","categories": [],
+        "tags": ["mlb","baseball analytics","data visualization"],
+        "url": "/posts/foul-ball-analysis/",
+        "teaser": "/assets/images/Foul%20Ball.webp"
       },{
         "title": "Beat the Streak Shiny App",
         "excerpt":"From the Beat the Streak contest FAQ’s: What is Beat the Streak? Beat the Streak is a free-to-play contest where fans predict an MLB player to get a hit. If fans build a streak of 57 correct picks (beating baseball’s famous 56-game hitting streak), they could win $5.6 Million. […]...","categories": [],

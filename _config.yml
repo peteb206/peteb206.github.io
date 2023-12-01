@@ -90,7 +90,6 @@ exclude:
   # - vendor/ruby/
   - README.md
   - ref/
-  - _posts/*/*
 include:
   - _pages
   - _posts
@@ -100,6 +99,9 @@ permalink: /:categories/:title/
     
 # Collections
 collections:
+  posts:
+    output: true
+    permalink: /:collection/:title/
   projects:
     output: true
     permalink: /:collection/:path/
