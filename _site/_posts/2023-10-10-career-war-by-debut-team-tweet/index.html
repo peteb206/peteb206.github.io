@@ -107,7 +107,7 @@
         var links = document.getElementsByTagName("a");
         for (var i = 0; i < links.length; i++) {
             var thisLink = links[i];
-            if (thisLink.getAttribute("href").startsWith("http")) {
+            if (thisLink.getAttribute("href").startsWith("http") && thisLink.getAttribute("href").indexOf(window.location.hostname) == -1) {
                 thisLink.setAttribute("target", "_blank");
             }
         }
@@ -179,6 +179,20 @@
         margin: 3px;
         font-size: 0.9em;
         font-weight: bold;
+    }
+
+    /* Videos */
+    video {
+        width: 100%;
+        max-width: 750px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    figcaption {
+        text-align: center;
+        width: 100%;
+        margin-top: 0.5em;
     }
 </style>
 <!-- end custom head snippets -->

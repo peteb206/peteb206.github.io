@@ -23,6 +23,12 @@ var store = [{
         "url": "/posts/foul-ball-analysis/",
         "teaser": "/assets/images/Foul%20Ball.webp"
       },{
+        "title": "Expected Run Value",
+        "excerpt":"Introduction Run Value is a way to translate the result of a pitch to an actual number of runs. Seeing that runs are the main currency in baseball games, this value is helpful for isolating the effect a player has on a game. wOBA is one of the most popular...","categories": [],
+        "tags": ["mlb","sabermetrics"],
+        "url": "/posts/expected-run-value/",
+        "teaser": "/assets/images/Home%20Plate.webp"
+      },{
         "title": "Beat the Streak Shiny App",
         "excerpt":"From the Beat the Streak contest FAQ’s: What is Beat the Streak? Beat the Streak is a free-to-play contest where fans predict an MLB player to get a hit. If fans build a streak of 57 correct picks (beating baseball’s famous 56-game hitting streak), they could win $5.6 Million. […]...","categories": [],
         "tags": ["sabermetrics","statcast","predictive analytics","web development"],

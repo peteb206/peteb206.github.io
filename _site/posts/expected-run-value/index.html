@@ -1,0 +1,1435 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Expected Run Value - Pete Berryman</title>
+<meta name="description" content="Similar to how xwOBA is an adjusted version of wOBA, I have constructed a statistic called Expected Run Value to modify a player’s Run Value based on the quality of his contact in any of the 24 baserunner/out scenarios (RE24 states).">
+
+
+  <meta name="author" content="Pete Berryman">
+  
+  <meta property="article:author" content="Pete Berryman">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Pete Berryman">
+<meta property="og:title" content="Expected Run Value">
+<meta property="og:url" content="http://localhost:4000/posts/expected-run-value/">
+
+
+  <meta property="og:description" content="Similar to how xwOBA is an adjusted version of wOBA, I have constructed a statistic called Expected Run Value to modify a player’s Run Value based on the quality of his contact in any of the 24 baserunner/out scenarios (RE24 states).">
+
+
+
+  <meta property="og:image" content="http://localhost:4000/assets/images/Home%20Plate.webp">
+
+
+
+
+
+  <meta property="article:published_time" content="2023-12-07T10:30:00-06:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/posts/expected-run-value/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": null,
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Pete Berryman Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/images/favicon/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon/favicon-16x16.png">
+<link rel="manifest" href="/assets/images/favicon/site.webmanifest">
+<link rel="mask-icon" href="/assets/images/favicon/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="shortcut icon" href="/assets/images/favicon/favicon.ico">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="msapplication-config" content="/assets/images/favicon/browserconfig.xml">
+<meta name="theme-color" content="#ffffff">
+
+<!-- Font Awesome Icons -->
+<script src="https://kit.fontawesome.com/ad55694c33.js" crossorigin="anonymous"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(event) {
+        var links = document.getElementsByTagName("a");
+        for (var i = 0; i < links.length; i++) {
+            var thisLink = links[i];
+            if (thisLink.getAttribute("href").startsWith("http") && thisLink.getAttribute("href").indexOf(window.location.hostname) == -1) {
+                thisLink.setAttribute("target", "_blank");
+            }
+        }
+    });
+</script>
+
+<!-- Custom CSS -->
+<style>
+    /* Footer */
+    /*
+    .page__footer .social-icons .fa-github { color: white; }
+    .page__footer .social-icons .fa-linkedin { color: white; }
+    .page__footer .social-icons .fa-twitter { color: white; }
+    */
+
+    /* Masthead */
+    div.masthead__inner-wrap {
+        padding-top: 0.5em;
+        padding-bottom: 0.5em;
+    }
+    .site-logo img { max-height: 3rem }
+
+    /* External Links Label */
+    span.external-link-label {
+        padding-left: 5px;
+    }
+
+    /* Project Title Image */
+    img.project-title-image {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 300px;
+    }
+
+    /* Posts */
+    table.post { overflow-x: visible; }
+    table.post td {
+        border-bottom: none;
+        padding: 0%;
+    }
+    table.post h2 {
+        padding-bottom: 3px;
+        font-size: 1.75em;
+        text-decoration: underline;
+    }
+    table.post p.page__meta { font-size: 0.8em !important; }
+    table.post p.archive__item-excerpt {
+        font-size: 1em;
+        margin-bottom: 4px;
+    }
+    table.post img.teaser-img-side {
+        max-width: 14em;
+        padding-right: 15px;
+    }
+    @media screen and (max-width: 500px) {
+        table.post img.teaser-img-side {
+            display: none;
+        }
+    }
+
+    /* Tags */
+    span.item-tag {
+        display: inline-block;
+        /* color: white; */
+        background-color: #e9dcbe;
+        border-radius: 5px;
+        padding: 3px;
+        margin: 3px;
+        font-size: 0.9em;
+        font-weight: bold;
+    }
+
+    /* Videos */
+    video {
+        width: 100%;
+        max-width: 750px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    figcaption {
+        text-align: center;
+        width: 100%;
+        margin-top: 0.5em;
+    }
+</style>
+<!-- end custom head snippets -->
+  </head>
+
+  <body class="layout--single wide">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/favicon/android-chrome-512x512.png" alt=" "></a>
+        
+        <a class="site-title" href="/">
+           
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/">Home</a>
+            </li><li class="masthead__menu-item">
+              <a href="/projects/">Projects & Apps</a>
+            </li><li class="masthead__menu-item">
+              <a href="/posts/">Posts</a>
+            </li><li class="masthead__menu-item">
+              <a href="/about/">About</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="http://localhost:4000/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/posts" itemprop="item"><span itemprop="name">Posts</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        <li class="current">Expected Run Value</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+        <img src="/assets/images/Profile%20Picture.jpeg" alt="Pete Berryman" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">Pete Berryman</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>A sports guy</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">Fort Worth, TX</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="https://www.linkedin.com/in/peteberryman82" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+          
+            <li><a href="https://twitter.com/PeteBerryman" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span class="label">Twitter</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/peteb206" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Expected Run Value">
+    <meta itemprop="description" content="Similar to how xwOBA is an adjusted version of wOBA, I have constructed a statistic called Expected Run Value to modify a player’s Run Value based on the quality of his contact in any of the 24 baserunner/out scenarios (RE24 states).">
+    <meta itemprop="datePublished" content="2023-12-07T10:30:00-06:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Expected Run Value
+</h1>
+          
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2023-12-07T10:30:00-06:00">December 7, 2023</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          14 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-bars-staggered"></i> On this page</h4></header>
+              <ul class="toc__menu"><li><a href="#introduction">Introduction</a></li><li><a href="#expected-run-value">Expected Run Value</a></li><li><a href="#applying-the-statistic">Applying the Statistic</a><ul><li><a href="#hitters-by-expected-run-value">Hitters by Expected Run Value</a></li><li><a href="#pitchers-by-expected-run-value">Pitchers by Expected Run Value</a></li><li><a href="#biggest-differences-in-expected-vs-actual-run-value">Biggest Differences in Expected vs. Actual Run Value</a><ul><li><a href="#hitters">Hitters</a></li><li><a href="#pitchers">Pitchers</a></li></ul></li><li><a href="#balls-in-play-biggest-differences-in-expected-vs-actual-run-value">Balls in Play: Biggest Differences in Expected vs. Actual Run Value</a></li></ul></li><li><a href="#conclusions">Conclusions</a></li><li><a href="#links">Links</a></li></ul>
+
+            </nav>
+          </aside>
+        
+        <h2 id="introduction">Introduction</h2>
+<p><a href="https://www.youtube.com/watch?v=FEq8ITlvftc">Run Value</a> is a way to translate the result of a pitch to an actual number of runs. Seeing that runs are the main currency in baseball games, this value is helpful for isolating the effect a player has on a game.</p>
+
+<p><a href="https://www.mlb.com/glossary/advanced-stats/weighted-on-base-average">wOBA</a> is one of the most popular ways to attach a single evaluative number to today’s MLB hitters. Unlike OBP, wOBA recognizes that doubles are more valuable than singles. Unlike SLG, wOBA recognizes that doubles are not exactly twice as valuable as singles. Instead, it weighs each at bat’s outcome in terms of how many runs that outcome is good for, on average. The stat takes the situations out of baseball so that hitters are not rewarded or punished for things they cannot control, like their teammates getting on base.</p>
+
+<p>Statcast has blessed us with some incredible metrics to describe the action we see during MLB games. <a href="https://www.mlb.com/glossary/statcast/expected-woba">xwOBA</a> takes wOBA a step further by measuring the predicted wOBA based solely off of the velocity and angle of the ball off the bat and the batter’s sprint speed. If a player’s wOBA is less than his xwOBA, this suggests that he has been somewhat unlucky and that his results should have been better than they were. The opposite goes for when wOBA exceeds xwOBA. In summary, xwOBA is possibly the best metric to determine the quality of contact. Deep line drives have a high xwOBA, and weak grounders have a low xwOBA.</p>
+
+<p>Naturally, Run Value and xwOBA can be used to evaluate both hitters and pitchers. While hitters seek to generate runs and square up the baseball, pitchers try to prevent runs and miss barrels. While these two stats are useful, xwOBA ignores the importance of situational baseball on run scoring. Run Value does not accurately reflect the skill involved in a play. It even credits the batter if his teammate steals a base or punishes him if his teammate is caught stealing because these events happened during his at bat.</p>
+
+<p>Take a look at these two clips with runners on second and third from the 2023 MLB season.</p>
+
+<table style="margin: 0 auto; display: table; width: auto;">
+    <thead>
+        <tr>
+            <th>Play Result</th>
+            <th>Exit Velocity</th>
+            <th>Launch Angle</th>
+            <th>xwOBA</th>
+            <th>Run Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Line Out</td>
+            <td>108.8 mph</td>
+            <td>19°</td>
+            <td>1.224</td>
+            <td>-.379</td>
+        </tr>
+    </tbody>
+</table>
+<figure>
+    <video src="/assets/videos/Triston Casas Lineout.mp4" autoplay="" loop="" muted="" playsinline=""></video> <!-- https://sporty-clips.mlb.com/22044da2-867a-4cf9-ae64-54fb172d1af7.mp4 -->
+    <figcaption>Triston Casas ropes a line drive deep down the right field line before Fernando Tatis Jr. runs it down to end the inning and strand the two runners in scoring position.</figcaption>
+</figure>
+<hr />
+<table style="margin: 0 auto; display: table; width: auto;">
+    <thead>
+        <tr>
+            <th>Play Result</th>
+            <th>Exit Velocity</th>
+            <th>Launch Angle</th>
+            <th>xwOBA</th>
+            <th>Run Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Double</td>
+            <td>71.6 mph</td>
+            <td>38°</td>
+            <td>.401</td>
+            <td>1.336</td>
+        </tr>
+    </tbody>
+</table>
+<figure>
+    <video src="/assets/videos/Jose Ramirez Bloop Double.mp4" autoplay="" loop="" muted="" playsinline=""></video> <!-- https://sporty-clips.mlb.com/5ea300b3-71e3-4e20-b245-40e6bdbb9a0d.mp4 -->
+    <figcaption>Jose Ramirez hits a pop fly to shallow right center field that drops in after Kolten Wong tries to make an over-the-shoulder catch. Two runs score as a result.</figcaption>
+</figure>
+
+<p>The Casas play results in a very high xwOBA of 1.224, but Run Value says he costed his team .379 runs. Meanwhile, Ramirez posted a xwOBA of just .401 but generated 1.336 runs based on Run Value.</p>
+
+<p>Now, check out these two frozen ropes Aaron Judge hit:</p>
+
+<table style="margin: 0 auto; display: table; width: auto;">
+    <thead>
+        <tr>
+            <th>Play Result</th>
+            <th>Exit Velocity</th>
+            <th>Launch Angle</th>
+            <th>xwOBA</th>
+            <th>Run Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Solo Home Run</td>
+            <td>111.4 mph</td>
+            <td>22°</td>
+            <td>1.813</td>
+            <td>.975</td>
+        </tr>
+    </tbody>
+</table>
+<figure>
+    <video src="/assets/videos/Aaron Judge Solo Home Run.mp4" autoplay="" loop="" muted="" playsinline=""></video> <!-- https://sporty-clips.mlb.com/de7f5439-6104-444c-9f81-fdb215e017d3.mp4 -->
+    <figcaption>Aaron Judge rips a solo HR to left center field with an xwOBA of 1.813 and a Run Value of .975.</figcaption>
+</figure>
+<hr />
+<table style="margin: 0 auto; display: table; width: auto;">
+    <thead>
+        <tr>
+            <th>Play Result</th>
+            <th>Exit Velocity</th>
+            <th>Launch Angle</th>
+            <th>xwOBA</th>
+            <th>Run Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Grand Slam</td>
+            <td>110.0 mph</td>
+            <td>22°</td>
+            <td>1.753</td>
+            <td>3.043</td>
+        </tr>
+    </tbody>
+</table>
+<figure>
+    <video src="/assets/videos/Aaron Judge Grand Slam.mp4" autoplay="" loop="" muted="" playsinline=""></video> <!-- https://sporty-clips.mlb.com/7c3ece22-f094-44cf-b088-844413454357.mp4 -->
+    <figcaption>Aaron Judge smashes a grand slam to dead center field with an xwOBA of 1.753 and a Run Value of 3.043.</figcaption>
+</figure>
+
+<p>In this scenario, we see how situations have a major effect on a player’s Run Value. Aaron Judge crushed both of these balls almost identically except one was slightly pulled whereas the other was right back up the middle. xwOBA does not consider horizontal launch angle, so these two swings have very similar xwOBA values. However, one was with the bases empty, and the other was with the bases loaded. The grand slam produced a much higher Run Value for Judge than the solo shot.</p>
+
+<p>What these 4 clips tell us is that neither xwOBA nor Run Value perfectly describe what happens on a play. My goal is to measure how many runs a hitter generates or a pitcher prevents but removing factors that do not reflect their skill.</p>
+
+<h2 id="expected-run-value">Expected Run Value</h2>
+<p>Similar to how xwOBA is an adjusted version of wOBA, I have constructed a statistic called Expected Run Value to modify a player’s Run Value based on the quality of his contact in any of the 24 baserunner/out scenarios (RE24 states). When MLB developed the xwOBA statistic, they went to great lengths to make it a metric that accurately evaluates the run-scoring capability of a ball in play. Read more about their process <a href="https://technology.mlblogs.com/an-introduction-to-expected-weighted-on-base-average-xwoba-29d6070ba52b">here</a>. I am using this established metric to determine how “lucky” a player’s run value on a ball in play is based on the xwOBA. The relationship between xwOBA and Run Value is not particularly linear, even when grouped by RE24 state:</p>
+
+<p><img src="/assets/images/2023 xwOBA vs Run Value by State.png" alt="2023 xwOBA vs Run Value by State" /></p>
+
+<p>To find a solid non-linear predictor of Run Value, I turned to the K-nearest neighbors algorithm, which takes the average of the Run Values of the <em>k</em> most similar xwOBA values with the same RE24 state. I tried a number of different <em>k</em> values until I found the one that was most predictive of Run Value:</p>
+
+<p><img src="/assets/images/2023 Expected Run Value KNN Testing.png" alt="2023 Expected Run Value KNN Testing" /></p>
+
+<p>Naturally, balls in play with more extreme Run Values (think greater than 1.5 or less than -0.5) will generally have less extreme Expected Run Values. The following histograms show that Expected Run Value has a slightly more narrow distribution than Run Value:</p>
+
+<p><img src="/assets/images/2023 Actual vs Expected Run Value Histograms.png" alt="2023 Actual vs Expected Run Value Histograms" /></p>
+
+<h2 id="applying-the-statistic">Applying the Statistic</h2>
+<p>Now that I have a way of evaluating the number of runs that players “should have” generated on each batted ball, I want to apply the metric to 2023’s hitters and pitchers to see how it may cause us to rethink their performances.</p>
+
+<p>When applying Expected Run Value to player seasons, most players’ Run Values are slightly adjusted (+/- 5 runs), but the following histograms show some extreme adjustments, too:</p>
+
+<p><img src="/assets/images/2023 Expected Run Value Adjustments.png" alt="2023 Expected Run Value Adjustments" /></p>
+
+<p>Next, I wanted to see which players were affected significantly by these adjustments.</p>
+
+<h3 id="hitters-by-expected-run-value">Hitters by Expected Run Value</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Rank (<i class="fa-solid fa-arrow-up"></i><i class="fa-solid fa-arrow-down"></i>)</th>
+      <th style="text-align: left">Player</th>
+      <th style="text-align: left">Run Value</th>
+      <th style="text-align: left">Exp. Run Value</th>
+      <th style="text-align: left">+/-</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/660670.png" width="40px" />Acuña Jr., Ronald</td>
+      <td style="text-align: left"><span>66.6</span></td>
+      <td style="text-align: left"><span>80.9</span></td>
+      <td style="text-align: left"><span style="color: green;">+14.3</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">2 (<span style="color: green;"><i class="fa-solid fa-arrow-up"></i> 2</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/605141.png" width="40px" />Betts, Mookie</td>
+      <td style="text-align: left"><span>61</span></td>
+      <td style="text-align: left"><span>61.5</span></td>
+      <td style="text-align: left"><span style="color: green;">+0.5</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">3 (<span style="color: green;"><i class="fa-solid fa-arrow-up"></i> 5</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/665742.png" width="40px" />Soto, Juan</td>
+      <td style="text-align: left"><span>44.8</span></td>
+      <td style="text-align: left"><span>61.1</span></td>
+      <td style="text-align: left"><span style="color: green;">+16.3</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">4 (<span style="color: red;"><i class="fa-solid fa-arrow-down"></i> 2</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/518692.png" width="40px" />Freeman, Freddie</td>
+      <td style="text-align: left"><span>64.3</span></td>
+      <td style="text-align: left"><span>57.7</span></td>
+      <td style="text-align: left"><span style="color: red;">-6.6</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">5 (<span style="color: green;"><i class="fa-solid fa-arrow-up"></i> 2</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/592450.png" width="40px" />Judge, Aaron</td>
+      <td style="text-align: left"><span>45</span></td>
+      <td style="text-align: left"><span>56.2</span></td>
+      <td style="text-align: left"><span style="color: green;">+11.2</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">6</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/670541.png" width="40px" />Alvarez, Yordan</td>
+      <td style="text-align: left"><span>48.7</span></td>
+      <td style="text-align: left"><span>54.9</span></td>
+      <td style="text-align: left"><span style="color: green;">+6.2</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">7 (<span style="color: green;"><i class="fa-solid fa-arrow-up"></i> 4</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/663656.png" width="40px" />Tucker, Kyle</td>
+      <td style="text-align: left"><span>41</span></td>
+      <td style="text-align: left"><span>51.4</span></td>
+      <td style="text-align: left"><span style="color: green;">+10.4</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">8 (<span style="color: red;"><i class="fa-solid fa-arrow-down"></i> 5</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/621566.png" width="40px" />Olson, Matt</td>
+      <td style="text-align: left"><span>63.6</span></td>
+      <td style="text-align: left"><span>48.4</span></td>
+      <td style="text-align: left"><span style="color: red;">-15.2</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">9 (<span style="color: red;"><i class="fa-solid fa-arrow-down"></i> 4</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/660271.png" width="40px" />Ohtani, Shohei</td>
+      <td style="text-align: left"><span>53.5</span></td>
+      <td style="text-align: left"><span>45.8</span></td>
+      <td style="text-align: left"><span style="color: red;">-7.7</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">10 (<span style="color: red;"><i class="fa-solid fa-arrow-down"></i> 1</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/608369.png" width="40px" />Seager, Corey</td>
+      <td style="text-align: left"><span>43.9</span></td>
+      <td style="text-align: left"><span>40.5</span></td>
+      <td style="text-align: left"><span style="color: red;">-3.4</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">…</td>
+      <td style="text-align: left">…</td>
+      <td style="text-align: left">…</td>
+      <td style="text-align: left">…</td>
+      <td style="text-align: left">…</td>
+    </tr>
+  </tbody>
+  <tbody>
+    <tr>
+      <td style="text-align: left">642 (<span style="color: red;"><i class="fa-solid fa-arrow-down"></i> 45</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/686668.png" width="40px" />Doyle, Brenton</td>
+      <td style="text-align: left"><span>-12.2</span></td>
+      <td style="text-align: left"><span>-20.6</span></td>
+      <td style="text-align: left"><span style="color: red;">-8.4</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">643 (<span style="color: green;"><i class="fa-solid fa-arrow-up"></i> 5</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/668930.png" width="40px" />Turang, Brice</td>
+      <td style="text-align: left"><span>-21.3</span></td>
+      <td style="text-align: left"><span>-21.2</span></td>
+      <td style="text-align: left"><span style="color: green;">+0.1</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">644 (<span style="color: red;"><i class="fa-solid fa-arrow-down"></i> 16</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/500871.png" width="40px" />Escobar, Eduardo</td>
+      <td style="text-align: left"><span>-16.5</span></td>
+      <td style="text-align: left"><span>-21.5</span></td>
+      <td style="text-align: left"><span style="color: red;">-5</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">645 (<span style="color: green;"><i class="fa-solid fa-arrow-up"></i> 4</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/455117.png" width="40px" />Maldonado, Martín</td>
+      <td style="text-align: left"><span>-26.4</span></td>
+      <td style="text-align: left"><span>-21.8</span></td>
+      <td style="text-align: left"><span style="color: green;">+4.6</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">646 (<span style="color: red;"><i class="fa-solid fa-arrow-down"></i> 360</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/665923.png" width="40px" />Ruiz, Esteury</td>
+      <td style="text-align: left"><span>-1.1</span></td>
+      <td style="text-align: left"><span>-22.1</span></td>
+      <td style="text-align: left"><span style="color: red;">-21</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">647 (<span style="color: red;"><i class="fa-solid fa-arrow-down"></i> 53</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/665926.png" width="40px" />Giménez, Andrés</td>
+      <td style="text-align: left"><span>-12</span></td>
+      <td style="text-align: left"><span>-23.3</span></td>
+      <td style="text-align: left"><span style="color: red;">-11.3</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">648 (<span style="color: green;"><i class="fa-solid fa-arrow-up"></i> 3</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/641313.png" width="40px" />Anderson, Tim</td>
+      <td style="text-align: left"><span>-30.2</span></td>
+      <td style="text-align: left"><span>-23.6</span></td>
+      <td style="text-align: left"><span style="color: green;">+6.6</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">649 (<span style="color: red;"><i class="fa-solid fa-arrow-down"></i> 22</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/657136.png" width="40px" />Wong, Connor</td>
+      <td style="text-align: left"><span>-16.2</span></td>
+      <td style="text-align: left"><span>-24.2</span></td>
+      <td style="text-align: left"><span style="color: red;">-8</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">650 (<span style="color: red;"><i class="fa-solid fa-arrow-down"></i> 160</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/593160.png" width="40px" />Merrifield, Whit</td>
+      <td style="text-align: left"><span>-6.1</span></td>
+      <td style="text-align: left"><span>-28</span></td>
+      <td style="text-align: left"><span style="color: red;">-21.9</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">651 (<span style="color: red;"><i class="fa-solid fa-arrow-down"></i> 1</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/664702.png" width="40px" />Straw, Myles</td>
+      <td style="text-align: left"><span>-29.6</span></td>
+      <td style="text-align: left"><span>-28.4</span></td>
+      <td style="text-align: left"><span style="color: green;">+1.2</span></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Ronald Acuña Jr.’s MLB-best Run Value of 66.6 is further legitimized by his Expected Run Value of 80.9. In fact, his Expected Run Value is nearly 20 runs higher than the second highest, Mookie Betts’ 61.5! All of the top-10 performers here are highly regarded superstars, but I am surprised to see Whit Merrifield with the second-lowest Expected Run Value with -28. Merrifield was a solid contribitor to the Blue Jays’ offense this season but did have the fourth lowest average exit velocity of all qualified hitters in 2023.</p>
+
+<h3 id="pitchers-by-expected-run-value">Pitchers by Expected Run Value</h3>
+<p>Note: pitchers would desire a negative Run Value, as it would reflect run prevention.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Rank (<i class="fa-solid fa-arrow-up"></i><i class="fa-solid fa-arrow-down"></i>)</th>
+      <th style="text-align: left">Player</th>
+      <th style="text-align: left">Run Value</th>
+      <th style="text-align: left">Exp. Run Value</th>
+      <th style="text-align: left">+/-</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">1 (<span style="color: green;"><i class="fa-solid fa-arrow-up"></i> 15</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/641154.png" width="40px" />López, Pablo</td>
+      <td style="text-align: left"><span>-21.6</span></td>
+      <td style="text-align: left"><span>-38.9</span></td>
+      <td style="text-align: left"><span style="color: red;">-17.3</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">2 (<span style="color: red;"><i class="fa-solid fa-arrow-down"></i> 1</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/543037.png" width="40px" />Cole, Gerrit</td>
+      <td style="text-align: left"><span>-44.6</span></td>
+      <td style="text-align: left"><span>-27.8</span></td>
+      <td style="text-align: left"><span style="color: green;">+16.8</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">3 (<span style="color: green;"><i class="fa-solid fa-arrow-up"></i> 5</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/642585.png" width="40px" />Bautista, Félix</td>
+      <td style="text-align: left"><span>-25.1</span></td>
+      <td style="text-align: left"><span>-25.5</span></td>
+      <td style="text-align: left"><span style="color: red;">-0.4</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">4 (<span style="color: green;"><i class="fa-solid fa-arrow-up"></i> 44</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/675911.png" width="40px" />Strider, Spencer</td>
+      <td style="text-align: left"><span>-15.3</span></td>
+      <td style="text-align: left"><span>-25.1</span></td>
+      <td style="text-align: left"><span style="color: red;">-9.8</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">5 (<span style="color: green;"><i class="fa-solid fa-arrow-up"></i> 20</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/657006.png" width="40px" />Steele, Justin</td>
+      <td style="text-align: left"><span>-18.5</span></td>
+      <td style="text-align: left"><span>-23.9</span></td>
+      <td style="text-align: left"><span style="color: red;">-5.4</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">6 (<span style="color: green;"><i class="fa-solid fa-arrow-up"></i> 20</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/621107.png" width="40px" />Eflin, Zach</td>
+      <td style="text-align: left"><span>-18.4</span></td>
+      <td style="text-align: left"><span>-21.4</span></td>
+      <td style="text-align: left"><span style="color: red;">-3</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">7 (<span style="color: green;"><i class="fa-solid fa-arrow-up"></i> 1</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/656945.png" width="40px" />Scott, Tanner</td>
+      <td style="text-align: left"><span>-25.1</span></td>
+      <td style="text-align: left"><span>-20.8</span></td>
+      <td style="text-align: left"><span style="color: green;">+4.3</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">8 (<span style="color: red;"><i class="fa-solid fa-arrow-down"></i> 6</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/605483.png" width="40px" />Snell, Blake</td>
+      <td style="text-align: left"><span>-43.8</span></td>
+      <td style="text-align: left"><span>-19.9</span></td>
+      <td style="text-align: left"><span style="color: green;">+23.9</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">9 (<span style="color: green;"><i class="fa-solid fa-arrow-up"></i> 8</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/434378.png" width="40px" />Verlander, Justin</td>
+      <td style="text-align: left"><span>-20.7</span></td>
+      <td style="text-align: left"><span>-19.7</span></td>
+      <td style="text-align: left"><span style="color: green;">+1</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">10 (<span style="color: green;"><i class="fa-solid fa-arrow-up"></i> 9</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/554430.png" width="40px" />Wheeler, Zack</td>
+      <td style="text-align: left"><span>-20</span></td>
+      <td style="text-align: left"><span>-19.3</span></td>
+      <td style="text-align: left"><span style="color: green;">+0.7</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">…</td>
+      <td style="text-align: left">…</td>
+      <td style="text-align: left">…</td>
+      <td style="text-align: left">…</td>
+      <td style="text-align: left">…</td>
+    </tr>
+  </tbody>
+  <tbody>
+    <tr>
+      <td style="text-align: left">854 (<span style="color: red;"><i class="fa-solid fa-arrow-down"></i> 127</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/682847.png" width="40px" />Ortiz, Luis L.</td>
+      <td style="text-align: left"><span>7.2</span></td>
+      <td style="text-align: left"><span>20.6</span></td>
+      <td style="text-align: left"><span style="color: green;">+13.4</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">855 (<span style="color: red;"><i class="fa-solid fa-arrow-down"></i> 20</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/592789.png" width="40px" />Syndergaard, Noah</td>
+      <td style="text-align: left"><span>16.4</span></td>
+      <td style="text-align: left"><span>21.8</span></td>
+      <td style="text-align: left"><span style="color: green;">+5.4</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">856 (<span style="color: red;"><i class="fa-solid fa-arrow-down"></i> 5</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/666201.png" width="40px" />Manoah, Alek</td>
+      <td style="text-align: left"><span>20.7</span></td>
+      <td style="text-align: left"><span>22.9</span></td>
+      <td style="text-align: left"><span style="color: green;">+2.2</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">857</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/623167.png" width="40px" />Flexen, Chris</td>
+      <td style="text-align: left"><span>28.5</span></td>
+      <td style="text-align: left"><span>23.4</span></td>
+      <td style="text-align: left"><span style="color: red;">-5.1</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">858 (<span style="color: red;"><i class="fa-solid fa-arrow-down"></i> 114</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/656731.png" width="40px" />Megill, Tylor</td>
+      <td style="text-align: left"><span>7.9</span></td>
+      <td style="text-align: left"><span>23.7</span></td>
+      <td style="text-align: left"><span style="color: green;">+15.8</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">859 (<span style="color: red;"><i class="fa-solid fa-arrow-down"></i> 6</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/596295.png" width="40px" />Gomber, Austin</td>
+      <td style="text-align: left"><span>22.9</span></td>
+      <td style="text-align: left"><span>25.3</span></td>
+      <td style="text-align: left"><span style="color: green;">+2.4</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">860 (<span style="color: red;"><i class="fa-solid fa-arrow-down"></i> 2</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/666205.png" width="40px" />Muller, Kyle</td>
+      <td style="text-align: left"><span>28.6</span></td>
+      <td style="text-align: left"><span>27.9</span></td>
+      <td style="text-align: left"><span style="color: red;">-0.7</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">861</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/543475.png" width="40px" />Lyles, Jordan</td>
+      <td style="text-align: left"><span>31.1</span></td>
+      <td style="text-align: left"><span>29.2</span></td>
+      <td style="text-align: left"><span style="color: red;">-1.9</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">862 (<span style="color: green;"><i class="fa-solid fa-arrow-up"></i> 1</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/425794.png" width="40px" />Wainwright, Adam</td>
+      <td style="text-align: left"><span>36</span></td>
+      <td style="text-align: left"><span>36.4</span></td>
+      <td style="text-align: left"><span style="color: green;">+0.4</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">863 (<span style="color: red;"><i class="fa-solid fa-arrow-down"></i> 18</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/571578.png" width="40px" />Corbin, Patrick</td>
+      <td style="text-align: left"><span>19.7</span></td>
+      <td style="text-align: left"><span>45.3</span></td>
+      <td style="text-align: left"><span style="color: green;">+25.6</span></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The top 10 pitchers in regards to Expected Run Value were much more surprising than the hitters. Pablo Lopez is held in high regard right now due to his excellent postseason performance in 2023, but it turns out his regular season was every bit as impressive, as he had by far the highest Expected Run Value. It is also worth noting that relievers Felix Bautista and Tanner Scott are the only relievers who made the top 10. They were at a major disadvantage considering that Run Value is a counting stat, and relievers do not log as many innings as most starters.</p>
+
+<h3 id="biggest-differences-in-expected-vs-actual-run-value">Biggest Differences in Expected vs. Actual Run Value</h3>
+<h4 id="hitters">Hitters</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Rank (<i class="fa-solid fa-arrow-up"></i><i class="fa-solid fa-arrow-down"></i>)</th>
+      <th style="text-align: left">Player</th>
+      <th style="text-align: left">Run Value</th>
+      <th style="text-align: left">Exp. Run Value</th>
+      <th style="text-align: left">+/-</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">17 (<span style="color: green;"><i class="fa-solid fa-arrow-up"></i> 54</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/665489.png" width="40px" />Guerrero Jr., Vladimir</td>
+      <td style="text-align: left"><span>12.1</span></td>
+      <td style="text-align: left"><span>30.4</span></td>
+      <td style="text-align: left"><span style="color: green;">+18.3</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">3 (<span style="color: green;"><i class="fa-solid fa-arrow-up"></i> 5</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/665742.png" width="40px" />Soto, Juan</td>
+      <td style="text-align: left"><span>44.8</span></td>
+      <td style="text-align: left"><span>61.1</span></td>
+      <td style="text-align: left"><span style="color: green;">+16.3</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">24 (<span style="color: green;"><i class="fa-solid fa-arrow-up"></i> 60</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/624585.png" width="40px" />Soler, Jorge</td>
+      <td style="text-align: left"><span>10.6</span></td>
+      <td style="text-align: left"><span>26.6</span></td>
+      <td style="text-align: left"><span style="color: green;">+16</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">79 (<span style="color: green;"><i class="fa-solid fa-arrow-up"></i> 402</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/605137.png" width="40px" />Bell, Josh</td>
+      <td style="text-align: left"><span>-5.9</span></td>
+      <td style="text-align: left"><span>9.6</span></td>
+      <td style="text-align: left"><span style="color: green;">+15.5</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">12 (<span style="color: green;"><i class="fa-solid fa-arrow-up"></i> 28</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/668939.png" width="40px" />Rutschman, Adley</td>
+      <td style="text-align: left"><span>19.8</span></td>
+      <td style="text-align: left"><span>34.9</span></td>
+      <td style="text-align: left"><span style="color: green;">+15.1</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">31 (<span style="color: green;"><i class="fa-solid fa-arrow-up"></i> 83</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/665487.png" width="40px" />Tatis Jr., Fernando</td>
+      <td style="text-align: left"><span>7</span></td>
+      <td style="text-align: left"><span>22</span></td>
+      <td style="text-align: left"><span style="color: green;">+15</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">33 (<span style="color: green;"><i class="fa-solid fa-arrow-up"></i> 90</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/608070.png" width="40px" />Ramírez, José</td>
+      <td style="text-align: left"><span>6</span></td>
+      <td style="text-align: left"><span>20.5</span></td>
+      <td style="text-align: left"><span style="color: green;">+14.5</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">111 (<span style="color: green;"><i class="fa-solid fa-arrow-up"></i> 440</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/641343.png" width="40px" />Bauers, Jake</td>
+      <td style="text-align: left"><span>-8.5</span></td>
+      <td style="text-align: left"><span>5.9</span></td>
+      <td style="text-align: left"><span style="color: green;">+14.4</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">278 (<span style="color: green;"><i class="fa-solid fa-arrow-up"></i> 344</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/676475.png" width="40px" />Burleson, Alec</td>
+      <td style="text-align: left"><span>-15.3</span></td>
+      <td style="text-align: left"><span>-1</span></td>
+      <td style="text-align: left"><span style="color: green;">+14.3</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">135 (<span style="color: green;"><i class="fa-solid fa-arrow-up"></i> 444</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/672386.png" width="40px" />Kirk, Alejandro</td>
+      <td style="text-align: left"><span>-10.7</span></td>
+      <td style="text-align: left"><span>3.6</span></td>
+      <td style="text-align: left"><span style="color: green;">+14.3</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">…</td>
+      <td style="text-align: left">…</td>
+      <td style="text-align: left">…</td>
+      <td style="text-align: left">…</td>
+      <td style="text-align: left">…</td>
+    </tr>
+  </tbody>
+  <tbody>
+    <tr>
+      <td style="text-align: left">149 (<span style="color: red;"><i class="fa-solid fa-arrow-down"></i> 111</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/680574.png" width="40px" />McLain, Matt</td>
+      <td style="text-align: left"><span>20.8</span></td>
+      <td style="text-align: left"><span>2.5</span></td>
+      <td style="text-align: left"><span style="color: red;">-18.3</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">499 (<span style="color: red;"><i class="fa-solid fa-arrow-down"></i> 429</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/623912.png" width="40px" />Ramírez, Harold</td>
+      <td style="text-align: left"><span>12.2</span></td>
+      <td style="text-align: left"><span>-6.3</span></td>
+      <td style="text-align: left"><span style="color: red;">-18.5</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">116 (<span style="color: red;"><i class="fa-solid fa-arrow-down"></i> 91</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/514888.png" width="40px" />Altuve, Jose</td>
+      <td style="text-align: left"><span>24.9</span></td>
+      <td style="text-align: left"><span>4.8</span></td>
+      <td style="text-align: left"><span style="color: red;">-20.1</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">640 (<span style="color: red;"><i class="fa-solid fa-arrow-down"></i> 443</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/660707.png" width="40px" />Montero, Elehuris</td>
+      <td style="text-align: left"><span>1.3</span></td>
+      <td style="text-align: left"><span>-19.1</span></td>
+      <td style="text-align: left"><span style="color: red;">-20.4</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">646 (<span style="color: red;"><i class="fa-solid fa-arrow-down"></i> 360</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/665923.png" width="40px" />Ruiz, Esteury</td>
+      <td style="text-align: left"><span>-1.1</span></td>
+      <td style="text-align: left"><span>-22.1</span></td>
+      <td style="text-align: left"><span style="color: red;">-21</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">650 (<span style="color: red;"><i class="fa-solid fa-arrow-down"></i> 160</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/593160.png" width="40px" />Merrifield, Whit</td>
+      <td style="text-align: left"><span>-6.1</span></td>
+      <td style="text-align: left"><span>-28</span></td>
+      <td style="text-align: left"><span style="color: red;">-21.9</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">86 (<span style="color: red;"><i class="fa-solid fa-arrow-down"></i> 71</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/682998.png" width="40px" />Carroll, Corbin</td>
+      <td style="text-align: left"><span>31</span></td>
+      <td style="text-align: left"><span>8.2</span></td>
+      <td style="text-align: left"><span style="color: red;">-22.8</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">274 (<span style="color: red;"><i class="fa-solid fa-arrow-down"></i> 244</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/641355.png" width="40px" />Bellinger, Cody</td>
+      <td style="text-align: left"><span>22.9</span></td>
+      <td style="text-align: left"><span>-0.9</span></td>
+      <td style="text-align: left"><span style="color: red;">-23.8</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">372 (<span style="color: red;"><i class="fa-solid fa-arrow-down"></i> 350</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/670623.png" width="40px" />Paredes, Isaac</td>
+      <td style="text-align: left"><span>25.4</span></td>
+      <td style="text-align: left"><span>-2.9</span></td>
+      <td style="text-align: left"><span style="color: red;">-28.3</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">595 (<span style="color: red;"><i class="fa-solid fa-arrow-down"></i> 554</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/670770.png" width="40px" />Friedl, TJ</td>
+      <td style="text-align: left"><span>19.7</span></td>
+      <td style="text-align: left"><span>-11.5</span></td>
+      <td style="text-align: left"><span style="color: red;">-31.2</span></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>People were quick to criticize Vladimir Guerrero Jr.’s performance in 2023, but he did not get the results he deserved on batted balls. Several players also had outstanding Run Value seasons but had the benefit of good fortune along the way. Jose Altuve, NL Rookie of the Year Corbin Carroll and NL Comeback Player of the Year Cody Bellinger are among a list of star-studded players who rank in the bottom 10 in terms of <em>Expected Run Value - Run Value</em>.</p>
+
+<h4 id="pitchers">Pitchers</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Rank (<i class="fa-solid fa-arrow-up"></i><i class="fa-solid fa-arrow-down"></i>)</th>
+      <th style="text-align: left">Player</th>
+      <th style="text-align: left">Run Value</th>
+      <th style="text-align: left">Exp. Run Value</th>
+      <th style="text-align: left">+/-</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">830 (<span style="color: red;"><i class="fa-solid fa-arrow-down"></i> 786</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/664285.png" width="40px" />Valdez, Framber</td>
+      <td style="text-align: left"><span>-15.8</span></td>
+      <td style="text-align: left"><span>12.7</span></td>
+      <td style="text-align: left"><span style="color: green;">+28.5</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">863 (<span style="color: red;"><i class="fa-solid fa-arrow-down"></i> 18</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/571578.png" width="40px" />Corbin, Patrick</td>
+      <td style="text-align: left"><span>19.7</span></td>
+      <td style="text-align: left"><span>45.3</span></td>
+      <td style="text-align: left"><span style="color: green;">+25.6</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">335 (<span style="color: red;"><i class="fa-solid fa-arrow-down"></i> 329</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/668678.png" width="40px" />Gallen, Zac</td>
+      <td style="text-align: left"><span>-26.1</span></td>
+      <td style="text-align: left"><span>-1</span></td>
+      <td style="text-align: left"><span style="color: green;">+25.1</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">8 (<span style="color: red;"><i class="fa-solid fa-arrow-down"></i> 6</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/605483.png" width="40px" />Snell, Blake</td>
+      <td style="text-align: left"><span>-43.8</span></td>
+      <td style="text-align: left"><span>-19.9</span></td>
+      <td style="text-align: left"><span style="color: green;">+23.9</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">18 (<span style="color: red;"><i class="fa-solid fa-arrow-down"></i> 15</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/543243.png" width="40px" />Gray, Sonny</td>
+      <td style="text-align: left"><span>-38</span></td>
+      <td style="text-align: left"><span>-17.7</span></td>
+      <td style="text-align: left"><span style="color: green;">+20.3</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">81 (<span style="color: red;"><i class="fa-solid fa-arrow-down"></i> 77</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/673540.png" width="40px" />Senga, Kodai</td>
+      <td style="text-align: left"><span>-28.3</span></td>
+      <td style="text-align: left"><span>-10</span></td>
+      <td style="text-align: left"><span style="color: green;">+18.3</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">678 (<span style="color: red;"><i class="fa-solid fa-arrow-down"></i> 621</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/665871.png" width="40px" />Assad, Javier</td>
+      <td style="text-align: left"><span>-13.9</span></td>
+      <td style="text-align: left"><span>3.9</span></td>
+      <td style="text-align: left"><span style="color: green;">+17.8</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">80 (<span style="color: red;"><i class="fa-solid fa-arrow-down"></i> 75</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/680694.png" width="40px" />Bradish, Kyle</td>
+      <td style="text-align: left"><span>-27.5</span></td>
+      <td style="text-align: left"><span>-10.1</span></td>
+      <td style="text-align: left"><span style="color: green;">+17.4</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">2 (<span style="color: red;"><i class="fa-solid fa-arrow-down"></i> 1</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/543037.png" width="40px" />Cole, Gerrit</td>
+      <td style="text-align: left"><span>-44.6</span></td>
+      <td style="text-align: left"><span>-27.8</span></td>
+      <td style="text-align: left"><span style="color: green;">+16.8</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">721 (<span style="color: red;"><i class="fa-solid fa-arrow-down"></i> 633</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/666129.png" width="40px" />Garrett, Braxton</td>
+      <td style="text-align: left"><span>-11.3</span></td>
+      <td style="text-align: left"><span>5.1</span></td>
+      <td style="text-align: left"><span style="color: green;">+16.4</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">…</td>
+      <td style="text-align: left">…</td>
+      <td style="text-align: left">…</td>
+      <td style="text-align: left">…</td>
+      <td style="text-align: left">…</td>
+    </tr>
+  </tbody>
+  <tbody>
+    <tr>
+      <td style="text-align: left">525 (<span style="color: green;"><i class="fa-solid fa-arrow-up"></i> 308</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/657612.png" width="40px" />Hill, Tim</td>
+      <td style="text-align: left"><span>15.9</span></td>
+      <td style="text-align: left"><span>1.4</span></td>
+      <td style="text-align: left"><span style="color: red;">-14.5</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">25 (<span style="color: green;"><i class="fa-solid fa-arrow-up"></i> 313</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/657746.png" width="40px" />Ryan, Joe</td>
+      <td style="text-align: left"><span>-0.8</span></td>
+      <td style="text-align: left"><span>-16.1</span></td>
+      <td style="text-align: left"><span style="color: red;">-15.3</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">46 (<span style="color: green;"><i class="fa-solid fa-arrow-up"></i> 506</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/605400.png" width="40px" />Nola, Aaron</td>
+      <td style="text-align: left"><span>2.5</span></td>
+      <td style="text-align: left"><span>-13.2</span></td>
+      <td style="text-align: left"><span style="color: red;">-15.7</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">1 (<span style="color: green;"><i class="fa-solid fa-arrow-up"></i> 15</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/641154.png" width="40px" />López, Pablo</td>
+      <td style="text-align: left"><span>-21.6</span></td>
+      <td style="text-align: left"><span>-38.9</span></td>
+      <td style="text-align: left"><span style="color: red;">-17.3</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">466 (<span style="color: green;"><i class="fa-solid fa-arrow-up"></i> 376</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/686613.png" width="40px" />Brown, Hunter</td>
+      <td style="text-align: left"><span>18.2</span></td>
+      <td style="text-align: left"><span>0.7</span></td>
+      <td style="text-align: left"><span style="color: red;">-17.5</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">290 (<span style="color: green;"><i class="fa-solid fa-arrow-up"></i> 542</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/694297.png" width="40px" />Pfaadt, Brandon</td>
+      <td style="text-align: left"><span>15.8</span></td>
+      <td style="text-align: left"><span>-1.8</span></td>
+      <td style="text-align: left"><span style="color: red;">-17.6</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">804 (<span style="color: green;"><i class="fa-solid fa-arrow-up"></i> 55</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/622663.png" width="40px" />Severino, Luis</td>
+      <td style="text-align: left"><span>28.9</span></td>
+      <td style="text-align: left"><span>9.4</span></td>
+      <td style="text-align: left"><span style="color: red;">-19.5</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">117 (<span style="color: green;"><i class="fa-solid fa-arrow-up"></i> 686</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/592767.png" width="40px" />Smyly, Drew</td>
+      <td style="text-align: left"><span>12.1</span></td>
+      <td style="text-align: left"><span>-7.7</span></td>
+      <td style="text-align: left"><span style="color: red;">-19.8</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">63 (<span style="color: green;"><i class="fa-solid fa-arrow-up"></i> 751</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/668881.png" width="40px" />Greene, Hunter</td>
+      <td style="text-align: left"><span>13.1</span></td>
+      <td style="text-align: left"><span>-11.4</span></td>
+      <td style="text-align: left"><span style="color: red;">-24.5</span></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">799 (<span style="color: green;"><i class="fa-solid fa-arrow-up"></i> 63</span>)</td>
+      <td style="text-align: left"><img src="https://content.mlb.com/images/headshots/current/60x60/657756.png" width="40px" />Seabold, Connor</td>
+      <td style="text-align: left"><span>34.9</span></td>
+      <td style="text-align: left"><span>9.1</span></td>
+      <td style="text-align: left"><span style="color: red;">-25.8</span></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Framber Valdez, who had a lot of ups and downs in 2023, could have done a lot worse than his solid -15.8 Run Value. Hunter Greene’s Expected Run Value should provide optimism for Reds fans that he may get some better results going forward.</p>
+
+<p>To view the data for every hitter and pitcher:<br />
+<a href="https://docs.google.com/spreadsheets/d/1lp58oIk9SBJ1azep6i-J3sh2feuX4dq8LWNKeionY78/edit?usp=sharing"><i class="fa-solid fa-arrow-up-right-from-square"></i><span class="external-link-label">Google Sheet</span></a></p>
+
+<h3 id="balls-in-play-biggest-differences-in-expected-vs-actual-run-value">Balls in Play: Biggest Differences in Expected vs. Actual Run Value</h3>
+<p>While Expected Run Value is useful for re-evaluating player seasons, it can also be applied to any individual batted ball. Here is the play that holds the greatest <em>Expected Run Value - Run Value</em> metric for the 2023 season:</p>
+<table style="margin: 0 auto; display: table; width: auto;">
+    <thead>
+        <tr>
+            <th>Play Result</th>
+            <th>xwOBA</th>
+            <th>Run Value</th>
+            <th>Expected Run Value</th>
+            <th>+/-</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Fly Out</td>
+            <td>1.488</td>
+            <td>-.875</td>
+            <td>2.506</td>
+            <td><span style="color: green;">+3.381</span></td>
+        </tr>
+    </tbody>
+</table>
+<figure>
+    <video src="/assets/videos/Ty France Fly Out.mp4" autoplay="" loop="" muted="" playsinline=""></video> <!-- https://sporty-clips.mlb.com/6856c56b-b3d2-4a2e-bbd9-abfbcad598cc.mp4 -->
+    <figcaption>Ty France flies out sharply to center field with the bases loaded and 2 outs.</figcaption>
+</figure>
+
+<p>On the flip side, here is the lowest <em>Expected Run Value - Run Value</em> play for the 2023 season:</p>
+<table style="margin: 0 auto; display: table; width: auto;">
+    <thead>
+        <tr>
+            <th>Play Result</th>
+            <th>xwOBA</th>
+            <th>Run Value</th>
+            <th>Expected Run Value</th>
+            <th>+/-</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Grand Slam</td>
+            <td>.091</td>
+            <td>3.353</td>
+            <td>-.534</td>
+            <td><span style="color: red;">-3.888</span></td>
+        </tr>
+    </tbody>
+</table>
+<figure>
+    <video src="/assets/videos/Isaac Paredes Grand Slam.mp4" autoplay="" loop="" muted="" playsinline=""></video> <!-- https://sporty-clips.mlb.com/797381f8-2800-44d3-a4f7-9b84bfa4a8bd.mp4 -->
+    <figcaption>Isaac Paredes hits a grand slam to left field despite a low xwOBA of .091.</figcaption>
+</figure>
+
+<h2 id="conclusions">Conclusions</h2>
+<p>In player evalulation, there are no perfect stats to determine how well someone has performed. Run Value and xwOBA are both useful tools but do not paint the full picture. My Expected Run Value statistic attempts to use the positive characteristics of these two stats to counter each other’s weaknesses. My perception of many players’ 2023 seasons certainly changed when I saw their Expected Run Values. Ronald Acuña Jr. was at least as dominant as we all thought. Pablo Lopez should be viewed as a top-tier starting pitcher, not just an All-Star. NL Cy Young Winner Blake Snell and both All-Star starting pitchers (Cole and Gallen) were among the top 10 biggest drops from Run Value to Expected Run Value. They may have benefitted from good defense or well-positioned fielders.</p>
+
+<p>In this study, I relied on K-Nearest Neighbors regression to determine the Expected Run Value of each play, but I would be interested in investigating other models in the future to make this statistic as useful as possible. We will see how 2024’s hitters and pitchers perform compared to their 2023 seasons.</p>
+
+<h2 id="links">Links</h2>
+<p>To see my code, check out the following notebook:<br />
+<a href="https://github.com/peteb206/peteb206.github.io/blob/main/ref/Expected%20Run%20Value.ipynb">
+    <img src="/assets/images/Jupyter Open Notebook.svg" alt="Open Notebook" />
+</a></p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2023-12-07T10:30:00-06:00">December 7, 2023</time></p>
+
+
+      </footer>
+
+      <section class="page__share">
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Expected+Run+Value%20http%3A%2F%2Flocalhost%3A4000%2Fposts%2Fexpected-run-value%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fposts%2Fexpected-run-value%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fposts%2Fexpected-run-value%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/posts/foul-ball-analysis/" class="pagination--pager" title="A Spotlight on Foul Balls
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+      
+        
+          <li><a href="https://www.linkedin.com/in/peteberryman82" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i> LinkedIn</a></li>
+        
+      
+        
+          <li><a href="https://twitter.com/PeteBerryman" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/peteb206" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2023 Pete Berryman. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>
