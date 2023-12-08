@@ -105,6 +105,16 @@
                 thisLink.setAttribute("target", "_blank");
             }
         }
+
+        var authorUrlsWrapper = document.getElementsByClassName("author__urls-wrapper");
+        if (authorUrlsWrapper.length != 0) {
+            authorUrlsWrapper = authorUrlsWrapper[0]
+            var followButton = authorUrlsWrapper.getElementsByTagName("button");
+            if (followButton.length != 0) {
+                followButton = followButton[0]
+                followButton.innerText = "More Info" /* Change button text from Follow to More Info */
+            }
+        }
     });
 </script>
 
@@ -123,6 +133,13 @@
         padding-bottom: 0.5em;
     }
     .site-logo img { max-height: 3rem }
+
+    /* Author Profile */
+    h3.author__name {
+        /* Vertically center author name on photo/button in compressed views */
+        margin-top: 0.5em;
+        padding-bottom: 0.5em;
+    }
 
     /* External Links Label */
     span.external-link-label {
@@ -290,11 +307,6 @@
     
       <h3 class="author__name" itemprop="name">Pete Berryman</h3>
     
-    
-      <div class="author__bio" itemprop="description">
-        <p>A sports guy</p>
-
-      </div>
     
   </div>
 
