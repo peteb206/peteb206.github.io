@@ -3,7 +3,7 @@ layout: single
 title: "Expected Run Value"
 date: 2023-12-07 16:30:00 +0000
 header:
-    teaser: "/assets/images/Home Plate.webp"
+    teaser: "/assets/images/expected-run-value/Home Plate.webp"
 excerpt: "Similar to how xwOBA is an adjusted version of wOBA, I have constructed a statistic called Expected Run Value to modify a player's Run Value based on the quality of his contact in any of the 24 baserunner/out scenarios (RE24 states)."
 tags: [
     mlb,
@@ -14,6 +14,8 @@ toc_sticky: true
 toc_icon: "bars-staggered"
 classes: wide
 ---
+
+<img src="/assets/images/expected-run-value/Home Plate.webp" class="post-title-image">
 
 ## Introduction
 [Run Value](https://www.youtube.com/watch?v=FEq8ITlvftc) is a way to translate the result of a pitch to an actual number of runs. Seeing that runs are the main currency in baseball games, this value is helpful for isolating the effect a player has on a game.
@@ -47,7 +49,7 @@ Take a look at these two clips with runners on second and third from the 2023 ML
     </tbody>
 </table>
 <figure>
-    <video src="/assets/videos/Triston Casas Lineout.mp4" autoplay loop muted playsinline></video> <!-- https://sporty-clips.mlb.com/22044da2-867a-4cf9-ae64-54fb172d1af7.mp4 -->
+    <video src="/assets/videos/expected-run-value/Triston Casas Lineout.mp4" autoplay loop muted playsinline></video> <!-- https://sporty-clips.mlb.com/22044da2-867a-4cf9-ae64-54fb172d1af7.mp4 -->
     <figcaption>Triston Casas ropes a line drive deep down the right field line before Fernando Tatis Jr. runs it down to end the inning and strand the two runners in scoring position.</figcaption>
 </figure>
 ---
@@ -72,7 +74,7 @@ Take a look at these two clips with runners on second and third from the 2023 ML
     </tbody>
 </table>
 <figure>
-    <video src="/assets/videos/Jose Ramirez Bloop Double.mp4" autoplay loop muted playsinline></video> <!-- https://sporty-clips.mlb.com/5ea300b3-71e3-4e20-b245-40e6bdbb9a0d.mp4 -->
+    <video src="/assets/videos/expected-run-value/Jose Ramirez Bloop Double.mp4" autoplay loop muted playsinline></video> <!-- https://sporty-clips.mlb.com/5ea300b3-71e3-4e20-b245-40e6bdbb9a0d.mp4 -->
     <figcaption>Jose Ramirez hits a pop fly to shallow right center field that drops in after Kolten Wong tries to make an over-the-shoulder catch. Two runs score as a result.</figcaption>
 </figure>
 
@@ -101,7 +103,7 @@ Now, check out these two frozen ropes Aaron Judge hit:
     </tbody>
 </table>
 <figure>
-    <video src="/assets/videos/Aaron Judge Solo Home Run.mp4" autoplay loop muted playsinline></video> <!-- https://sporty-clips.mlb.com/de7f5439-6104-444c-9f81-fdb215e017d3.mp4 -->
+    <video src="/assets/videos/expected-run-value/Aaron Judge Solo Home Run.mp4" autoplay loop muted playsinline></video> <!-- https://sporty-clips.mlb.com/de7f5439-6104-444c-9f81-fdb215e017d3.mp4 -->
     <figcaption>Aaron Judge rips a solo HR to left center field with an xwOBA of 1.813 and a Run Value of .975.</figcaption>
 </figure>
 ---
@@ -126,7 +128,7 @@ Now, check out these two frozen ropes Aaron Judge hit:
     </tbody>
 </table>
 <figure>
-    <video src="/assets/videos/Aaron Judge Grand Slam.mp4" autoplay loop muted playsinline></video> <!-- https://sporty-clips.mlb.com/7c3ece22-f094-44cf-b088-844413454357.mp4 -->
+    <video src="/assets/videos/expected-run-value/Aaron Judge Grand Slam.mp4" autoplay loop muted playsinline></video> <!-- https://sporty-clips.mlb.com/7c3ece22-f094-44cf-b088-844413454357.mp4 -->
     <figcaption>Aaron Judge smashes a grand slam to dead center field with an xwOBA of 1.753 and a Run Value of 3.043.</figcaption>
 </figure>
 
@@ -137,22 +139,22 @@ What these 4 clips tell us is that neither xwOBA nor Run Value perfectly describ
 ## Expected Run Value
 Similar to how xwOBA is an adjusted version of wOBA, I have constructed a statistic called Expected Run Value to modify a player's Run Value based on the quality of his contact in any of the 24 baserunner/out scenarios (RE24 states). When MLB developed the xwOBA statistic, they went to great lengths to make it a metric that accurately evaluates the run-scoring capability of a ball in play. Read more about their process [here](https://technology.mlblogs.com/an-introduction-to-expected-weighted-on-base-average-xwoba-29d6070ba52b). I am using this established metric to determine how "lucky" a player's run value on a ball in play is based on the xwOBA. The relationship between xwOBA and Run Value is not particularly linear, even when grouped by RE24 state:
 
-![2023 xwOBA vs Run Value by State](/assets/images/2023 xwOBA vs Run Value by State.png)
+![2023 xwOBA vs Run Value by State](/assets/images/expected-run-value/2023 xwOBA vs Run Value by State.png)
 
 To find a solid non-linear predictor of Run Value, I turned to the K-nearest neighbors algorithm, which takes the average of the Run Values of the *k* most similar xwOBA values with the same RE24 state. I tried a number of different *k* values until I found the one that was most predictive of Run Value:
 
-![2023 Expected Run Value KNN Testing](/assets/images/2023 Expected Run Value KNN Testing.png)
+![2023 Expected Run Value KNN Testing](/assets/images/expected-run-value/2023 Expected Run Value KNN Testing.png)
 
 Naturally, balls in play with more extreme Run Values (think greater than 1.5 or less than -0.5) will generally have less extreme Expected Run Values. The following histograms show that Expected Run Value has a slightly more narrow distribution than Run Value:
 
-![2023 Actual vs Expected Run Value Histograms](/assets/images/2023 Actual vs Expected Run Value Histograms.png)
+![2023 Actual vs Expected Run Value Histograms](/assets/images/expected-run-value/2023 Actual vs Expected Run Value Histograms.png)
 
 ## Applying the Statistic
 Now that I have a way of evaluating the number of runs that players "should have" generated on each batted ball, I want to apply the metric to 2023's hitters and pitchers to see how it may cause us to rethink their performances.
 
 When applying Expected Run Value to player seasons, most players' Run Values are slightly adjusted (+/- 5 runs), but the following histograms show some extreme adjustments, too:
 
-![2023 Expected Run Value Adjustments](/assets/images/2023 Expected Run Value Adjustments.png)
+![2023 Expected Run Value Adjustments](/assets/images/expected-run-value/2023 Expected Run Value Adjustments.png)
 
 Next, I wanted to see which players were affected significantly by these adjustments.
 
@@ -300,7 +302,7 @@ While Expected Run Value is useful for re-evaluating player seasons, it can also
     </tbody>
 </table>
 <figure>
-    <video src="/assets/videos/Ty France Fly Out.mp4" autoplay loop muted playsinline></video> <!-- https://sporty-clips.mlb.com/6856c56b-b3d2-4a2e-bbd9-abfbcad598cc.mp4 -->
+    <video src="/assets/videos/expected-run-value/Ty France Fly Out.mp4" autoplay loop muted playsinline></video> <!-- https://sporty-clips.mlb.com/6856c56b-b3d2-4a2e-bbd9-abfbcad598cc.mp4 -->
     <figcaption>Ty France flies out sharply to center field with the bases loaded and 2 outs.</figcaption>
 </figure>
 
@@ -326,7 +328,7 @@ On the flip side, here is the lowest *Expected Run Value - Run Value* play for t
     </tbody>
 </table>
 <figure>
-    <video src="/assets/videos/Isaac Paredes Grand Slam.mp4" autoplay loop muted playsinline></video> <!-- https://sporty-clips.mlb.com/797381f8-2800-44d3-a4f7-9b84bfa4a8bd.mp4 -->
+    <video src="/assets/videos/expected-run-value/Isaac Paredes Grand Slam.mp4" autoplay loop muted playsinline></video> <!-- https://sporty-clips.mlb.com/797381f8-2800-44d3-a4f7-9b84bfa4a8bd.mp4 -->
     <figcaption>Isaac Paredes hits a grand slam to left field despite a low xwOBA of .091.</figcaption>
 </figure>
 

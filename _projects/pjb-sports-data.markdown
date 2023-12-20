@@ -5,7 +5,7 @@ toc_sticky: true
 toc_icon: "bars-staggered"
 excerpt: "A data engineering project to pull sports data from a variety of sources into a data warehouse for efficient querying and analysis."
 header:
-  teaser: "/assets/images/BigQuery.png"
+  teaser: "/assets/images/pjb-sports-data/BigQuery.png"
 sort_value: 1
 tags: [
   data engineering,
@@ -14,7 +14,7 @@ tags: [
 ]
 ---
 
-<img src="/assets/images/BigQuery.png" class="project-title-image">
+<img src="/assets/images/pjb-sports-data/BigQuery.png" class="project-title-image">
 
 ## Introduction
 Much of the MLB research I have done in recent years has involved loading Statcast data from [Baseball Savant](https://baseballsavant.mlb.com/). This publicly-available data provides an incredible opportunity to conduct in-depth studies of what we see happening on the diamond. However, I found that I was left with two options when working with this data:

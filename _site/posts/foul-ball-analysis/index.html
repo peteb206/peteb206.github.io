@@ -30,7 +30,7 @@
 
 
 
-  <meta property="og:image" content="http://localhost:4000/assets/images/Foul%20Ball.webp">
+  <meta property="og:image" content="http://localhost:4000/assets/images/foul-ball-analysis/Foul%20Ball.webp">
 
 
 
@@ -152,12 +152,19 @@
         padding-left: 5px;
     }
 
-    /* Project Title Image */
+    /* Title Image */
     img.project-title-image {
         display: block;
         margin-left: auto;
         margin-right: auto;
         max-width: 300px;
+    }
+
+    img.post-title-image {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 600px;
     }
 
     /* Posts */
@@ -178,7 +185,6 @@
     }
     table.post img.teaser-img-side {
         max-width: 14em;
-        padding-right: 15px;
     }
     @media screen and (max-width: 500px) {
         table.post img.teaser-img-side {
@@ -459,7 +465,9 @@
 
       <section class="page__content" itemprop="text">
         
-        <p>The text and figures were built from an R Markdown notebook:</p>
+        <p><img src="/assets/images/foul-ball-analysis/Foul Ball.webp" class="post-title-image" /></p>
+
+<p>The text and figures were built from an R Markdown notebook:</p>
 <iframe src="/assets/html/foul-ball-analysis.html" width="100%" style="height: 100vh;"></iframe>
 
         

@@ -3,7 +3,7 @@ layout: single
 title: "Competing in the big leagues with or without big money"
 date: 2020-12-10 10:14:02 +0000
 header:
-    teaser: "/assets/images/SAS Blog Teaser.png"
+    teaser: "/assets/images/sas-blog/SAS Blog Teaser.png"
 link: "https://blogs.sas.com/content/sascom/2020/12/10/competing-in-the-big-leagues-with-or-without-big-money/"
 excerpt: "There is no easy road to success for a MLB team. There are many ways to build a great team, but there are many more ways to build a mediocre team."
 tags: [

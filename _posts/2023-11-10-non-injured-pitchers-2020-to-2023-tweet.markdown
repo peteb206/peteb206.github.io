@@ -3,7 +3,7 @@ layout: single
 title: "Best Non-Injured Pitchers from 2020 to 2023"
 date: 2023-11-10 14:00:00 +0000
 header:
-    teaser: "/assets/images/Jose Berrios.jpeg"
+    teaser: "/assets/images/non-injured-pitchers-2020-to-2023-tweet/Jose Berrios.jpeg"
 link: "https://twitter.com/PeteBerryman/status/1723022190478590243"
 excerpt: "Everyone knows how hard it is to stay healthy as an MLB pitcher. These guys deserve to be highlighted for their success at staying available and performing well."
 tags: [

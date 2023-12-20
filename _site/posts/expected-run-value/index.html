@@ -30,7 +30,7 @@
 
 
 
-  <meta property="og:image" content="http://localhost:4000/assets/images/Home%20Plate.webp">
+  <meta property="og:image" content="http://localhost:4000/assets/images/expected-run-value/Home%20Plate.webp">
 
 
 
@@ -152,12 +152,19 @@
         padding-left: 5px;
     }
 
-    /* Project Title Image */
+    /* Title Image */
     img.project-title-image {
         display: block;
         margin-left: auto;
         margin-right: auto;
         max-width: 300px;
+    }
+
+    img.post-title-image {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 600px;
     }
 
     /* Posts */
@@ -178,7 +185,6 @@
     }
     table.post img.teaser-img-side {
         max-width: 14em;
-        padding-right: 15px;
     }
     @media screen and (max-width: 500px) {
         table.post img.teaser-img-side {
@@ -467,7 +473,9 @@
             </nav>
           </aside>
         
-        <h2 id="introduction">Introduction</h2>
+        <p><img src="/assets/images/expected-run-value/Home Plate.webp" class="post-title-image" /></p>
+
+<h2 id="introduction">Introduction</h2>
 <p><a href="https://www.youtube.com/watch?v=FEq8ITlvftc">Run Value</a> is a way to translate the result of a pitch to an actual number of runs. Seeing that runs are the main currency in baseball games, this value is helpful for isolating the effect a player has on a game.</p>
 
 <p><a href="https://www.mlb.com/glossary/advanced-stats/weighted-on-base-average">wOBA</a> is one of the most popular ways to attach a single evaluative number to today’s MLB hitters. Unlike OBP, wOBA recognizes that doubles are more valuable than singles. Unlike SLG, wOBA recognizes that doubles are not exactly twice as valuable as singles. Instead, it weighs each at bat’s outcome in terms of how many runs that outcome is good for, on average. The stat takes the situations out of baseball so that hitters are not rewarded or punished for things they cannot control, like their teammates getting on base.</p>
@@ -499,7 +507,7 @@
     </tbody>
 </table>
 <figure>
-    <video src="/assets/videos/Triston Casas Lineout.mp4" autoplay="" loop="" muted="" playsinline=""></video> <!-- https://sporty-clips.mlb.com/22044da2-867a-4cf9-ae64-54fb172d1af7.mp4 -->
+    <video src="/assets/videos/expected-run-value/Triston Casas Lineout.mp4" autoplay="" loop="" muted="" playsinline=""></video> <!-- https://sporty-clips.mlb.com/22044da2-867a-4cf9-ae64-54fb172d1af7.mp4 -->
     <figcaption>Triston Casas ropes a line drive deep down the right field line before Fernando Tatis Jr. runs it down to end the inning and strand the two runners in scoring position.</figcaption>
 </figure>
 <hr />
@@ -524,7 +532,7 @@
     </tbody>
 </table>
 <figure>
-    <video src="/assets/videos/Jose Ramirez Bloop Double.mp4" autoplay="" loop="" muted="" playsinline=""></video> <!-- https://sporty-clips.mlb.com/5ea300b3-71e3-4e20-b245-40e6bdbb9a0d.mp4 -->
+    <video src="/assets/videos/expected-run-value/Jose Ramirez Bloop Double.mp4" autoplay="" loop="" muted="" playsinline=""></video> <!-- https://sporty-clips.mlb.com/5ea300b3-71e3-4e20-b245-40e6bdbb9a0d.mp4 -->
     <figcaption>Jose Ramirez hits a pop fly to shallow right center field that drops in after Kolten Wong tries to make an over-the-shoulder catch. Two runs score as a result.</figcaption>
 </figure>
 
@@ -553,7 +561,7 @@
     </tbody>
 </table>
 <figure>
-    <video src="/assets/videos/Aaron Judge Solo Home Run.mp4" autoplay="" loop="" muted="" playsinline=""></video> <!-- https://sporty-clips.mlb.com/de7f5439-6104-444c-9f81-fdb215e017d3.mp4 -->
+    <video src="/assets/videos/expected-run-value/Aaron Judge Solo Home Run.mp4" autoplay="" loop="" muted="" playsinline=""></video> <!-- https://sporty-clips.mlb.com/de7f5439-6104-444c-9f81-fdb215e017d3.mp4 -->
     <figcaption>Aaron Judge rips a solo HR to left center field with an xwOBA of 1.813 and a Run Value of .975.</figcaption>
 </figure>
 <hr />
@@ -578,7 +586,7 @@
     </tbody>
 </table>
 <figure>
-    <video src="/assets/videos/Aaron Judge Grand Slam.mp4" autoplay="" loop="" muted="" playsinline=""></video> <!-- https://sporty-clips.mlb.com/7c3ece22-f094-44cf-b088-844413454357.mp4 -->
+    <video src="/assets/videos/expected-run-value/Aaron Judge Grand Slam.mp4" autoplay="" loop="" muted="" playsinline=""></video> <!-- https://sporty-clips.mlb.com/7c3ece22-f094-44cf-b088-844413454357.mp4 -->
     <figcaption>Aaron Judge smashes a grand slam to dead center field with an xwOBA of 1.753 and a Run Value of 3.043.</figcaption>
 </figure>
 
@@ -589,22 +597,22 @@
 <h2 id="expected-run-value">Expected Run Value</h2>
 <p>Similar to how xwOBA is an adjusted version of wOBA, I have constructed a statistic called Expected Run Value to modify a player’s Run Value based on the quality of his contact in any of the 24 baserunner/out scenarios (RE24 states). When MLB developed the xwOBA statistic, they went to great lengths to make it a metric that accurately evaluates the run-scoring capability of a ball in play. Read more about their process <a href="https://technology.mlblogs.com/an-introduction-to-expected-weighted-on-base-average-xwoba-29d6070ba52b">here</a>. I am using this established metric to determine how “lucky” a player’s run value on a ball in play is based on the xwOBA. The relationship between xwOBA and Run Value is not particularly linear, even when grouped by RE24 state:</p>
 
-<p><img src="/assets/images/2023 xwOBA vs Run Value by State.png" alt="2023 xwOBA vs Run Value by State" /></p>
+<p><img src="/assets/images/expected-run-value/2023 xwOBA vs Run Value by State.png" alt="2023 xwOBA vs Run Value by State" /></p>
 
 <p>To find a solid non-linear predictor of Run Value, I turned to the K-nearest neighbors algorithm, which takes the average of the Run Values of the <em>k</em> most similar xwOBA values with the same RE24 state. I tried a number of different <em>k</em> values until I found the one that was most predictive of Run Value:</p>
 
-<p><img src="/assets/images/2023 Expected Run Value KNN Testing.png" alt="2023 Expected Run Value KNN Testing" /></p>
+<p><img src="/assets/images/expected-run-value/2023 Expected Run Value KNN Testing.png" alt="2023 Expected Run Value KNN Testing" /></p>
 
 <p>Naturally, balls in play with more extreme Run Values (think greater than 1.5 or less than -0.5) will generally have less extreme Expected Run Values. The following histograms show that Expected Run Value has a slightly more narrow distribution than Run Value:</p>
 
-<p><img src="/assets/images/2023 Actual vs Expected Run Value Histograms.png" alt="2023 Actual vs Expected Run Value Histograms" /></p>
+<p><img src="/assets/images/expected-run-value/2023 Actual vs Expected Run Value Histograms.png" alt="2023 Actual vs Expected Run Value Histograms" /></p>
 
 <h2 id="applying-the-statistic">Applying the Statistic</h2>
 <p>Now that I have a way of evaluating the number of runs that players “should have” generated on each batted ball, I want to apply the metric to 2023’s hitters and pitchers to see how it may cause us to rethink their performances.</p>
 
 <p>When applying Expected Run Value to player seasons, most players’ Run Values are slightly adjusted (+/- 5 runs), but the following histograms show some extreme adjustments, too:</p>
 
-<p><img src="/assets/images/2023 Expected Run Value Adjustments.png" alt="2023 Expected Run Value Adjustments" /></p>
+<p><img src="/assets/images/expected-run-value/2023 Expected Run Value Adjustments.png" alt="2023 Expected Run Value Adjustments" /></p>
 
 <p>Next, I wanted to see which players were affected significantly by these adjustments.</p>
 
@@ -1392,7 +1400,7 @@
     </tbody>
 </table>
 <figure>
-    <video src="/assets/videos/Ty France Fly Out.mp4" autoplay="" loop="" muted="" playsinline=""></video> <!-- https://sporty-clips.mlb.com/6856c56b-b3d2-4a2e-bbd9-abfbcad598cc.mp4 -->
+    <video src="/assets/videos/expected-run-value/Ty France Fly Out.mp4" autoplay="" loop="" muted="" playsinline=""></video> <!-- https://sporty-clips.mlb.com/6856c56b-b3d2-4a2e-bbd9-abfbcad598cc.mp4 -->
     <figcaption>Ty France flies out sharply to center field with the bases loaded and 2 outs.</figcaption>
 </figure>
 
@@ -1418,7 +1426,7 @@
     </tbody>
 </table>
 <figure>
-    <video src="/assets/videos/Isaac Paredes Grand Slam.mp4" autoplay="" loop="" muted="" playsinline=""></video> <!-- https://sporty-clips.mlb.com/797381f8-2800-44d3-a4f7-9b84bfa4a8bd.mp4 -->
+    <video src="/assets/videos/expected-run-value/Isaac Paredes Grand Slam.mp4" autoplay="" loop="" muted="" playsinline=""></video> <!-- https://sporty-clips.mlb.com/797381f8-2800-44d3-a4f7-9b84bfa4a8bd.mp4 -->
     <figcaption>Isaac Paredes hits a grand slam to left field despite a low xwOBA of .091.</figcaption>
 </figure>
 
@@ -1466,7 +1474,8 @@
 ">Previous</a>
     
     
-      <a href="#" class="pagination--pager disabled">Next</a>
+      <a href="/posts/hitter-performance-vs-sp-and-rp/" class="pagination--pager" title="Hitter Performance vs. Starting Pitchers and Relief Pitchers
+">Next</a>
     
   </nav>
 

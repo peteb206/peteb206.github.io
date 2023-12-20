@@ -5,7 +5,7 @@ toc_sticky: true
 toc_icon: "bars-staggered"
 excerpt: "How many Canadians are playing college baseball? What are these players' stats? The CBN can tell you because of a web-scraping project I began in 2021."
 header:
-  teaser: "/assets/images/Canadian Baseball Network.png"
+  teaser: "/assets/images/canadians-in-college/Canadian Baseball Network.png"
 sort_value: 2
 tags: [
     college baseball,
@@ -14,7 +14,7 @@ tags: [
 ]
 ---
 
-<img src="/assets/images/Canadian Baseball Network.png" class="project-title-image">
+<img src="/assets/images/canadians-in-college/Canadian Baseball Network.png" class="project-title-image">
 
 ## Introduction
 The 2023-2024 school year marks the fourth season I have worked with the Canadian Baseball Network (CBN) to help identify Canadians who are playing college baseball at the [NCAA](https://web3.ncaa.org/directory/memberList?type=12&sportCode=MBA) (Div. I, II and III), [NAIA](https://naiastats.prestosports.com/sports/bsb/2023-24/teams), [NJCAA](https://www.njcaa.org/sports/bsb/teams) (Div. I, II and III), [CCCAA](https://www.cccaasports.org/sports/bsb/2023-24/teams), [NWAC](https://nwacsports.com/sports/bsb/2023-24/teams) and [USCAA](https://uscaa.prestosports.com/sports/bsb/2023-24/teams) levels. 

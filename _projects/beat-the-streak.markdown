@@ -2,7 +2,7 @@
 title: "Beat the Streak Shiny App"
 excerpt: "A Shiny for Python web app to make better predictions in MLB's Beat the Streak contest."
 header:
-  teaser: "/assets/images/Beat the Streak.png"
+  teaser: "/assets/images/beat-the-streak/Beat the Streak.png"
 classes: wide
 sort_value: 3
 tags: [
@@ -13,7 +13,7 @@ tags: [
 ]
 ---
 
-<img src="/assets/images/Beat the Streak.png" class="project-title-image">
+<img src="/assets/images/beat-the-streak/Beat the Streak.png" class="project-title-image">
 
 From the [Beat the Streak contest FAQ's](https://www.mlb.com/apps/beat-the-streak/faqs):
 > **What is Beat the Streak?**<br><br>Beat the Streak is a free-to-play contest where fans predict an MLB player to get a hit. If fans build a streak of 57 correct picks (beating baseball’s famous 56-game hitting streak), they could win $5.6 Million. [...] See Beat the Streak’s [Official Rules](https://www.mlb.com/apps/beat-the-streak/official-rules) here.
