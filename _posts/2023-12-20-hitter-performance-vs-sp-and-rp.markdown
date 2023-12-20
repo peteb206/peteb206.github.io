@@ -1,7 +1,7 @@
 ---
 layout: single
 title: "Hitter Performance vs. Starting Pitchers and Relief Pitchers"
-date: 2023-12-19 20:00:00 +0000
+date: 2023-12-20 16:30:00 +0000
 header:
     teaser: "/assets/images/hitter-performance-vs-sp-and-rp/Bullpen.jpeg"
 excerpt: "In school, some people study really hard. Others may study less but consider themselves to be \"good test-takers\". In a way, MLB hitters have to be both of these types of students, depending on the situation."
